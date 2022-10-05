@@ -15,7 +15,8 @@ final class UsersListViewModel: UsersListViewModelType {
     private let decoder: JSONDecoder
     private let apiClient: APIClientType
     private let databaseService: DatabaseServiceType
-    private let reachabilityChecker: ReachabilityCheckerType
+    private let fileManager: FileSystemManagerType
+    private let networkConnectionListener: NetworkConnectionListenerType
 
     // MARK: Initialization
 
@@ -23,12 +24,14 @@ final class UsersListViewModel: UsersListViewModelType {
          decoder: JSONDecoder,
          apiClient: APIClientType,
          databaseService: DatabaseServiceType,
-         reachabilityChecker: ReachabilityCheckerType) {
+         fileManager: FileSystemManagerType,
+         networkConnectionListener: NetworkConnectionListenerType) {
         self.coordinator = coordinator
         self.decoder = decoder
         self.apiClient = apiClient
         self.databaseService = databaseService
-        self.reachabilityChecker = reachabilityChecker
+        self.fileManager = fileManager
+        self.networkConnectionListener = networkConnectionListener
     }
 
 }
@@ -56,20 +59,36 @@ private extension UsersListViewModel {
             switch response {
             case .success(let data):
                 if let usersList = try? self?.decoder.decode([User].self, from: data) {
-                    
+                    // save to db
                     // reload tableView
                     // stop spinner
                     // start loading images + followers + following
                 } else if let errorData = try? self?.decoder.decode(ErrorResponse.self, from: data) {
-                    
+                    // load data from db
                     // show alert pop up here
                 }
                 break
             case .failure(let error):
                 break
+                // load data from db
                 // show alert pop up here
             }
         }
+    }
+
+}
+
+// MARK: - NetworkConnectionHandlerDelegate
+
+extension UsersListViewModel: NetworkConnectionListenerDelegate {
+
+    func handleOfflineMode() {
+        // load data from db
+        // show connection lost view
+    }
+
+    func handleOnlineMode() {
+        // hide connection lost view
     }
 
 }

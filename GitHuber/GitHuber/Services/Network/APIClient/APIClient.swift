@@ -56,7 +56,11 @@ private extension APIClient {
     private func request(endpoint: Endpoint, completion: @escaping (Result<Data, Error>) -> Void) {
         do {
             let urlRequest = try setupRequest(endpoint: endpoint)
-            let task = URLSession.shared.dataTask(with: urlRequest) { data, _, error in
+            let config = URLSessionConfiguration.default
+            config.waitsForConnectivity = true
+            let session = URLSession(configuration: config)
+
+            let task = session.dataTask(with: urlRequest) { data, _, error in
                 if let data = data {
                     completion(.success(data))
                 } else if let error = error {

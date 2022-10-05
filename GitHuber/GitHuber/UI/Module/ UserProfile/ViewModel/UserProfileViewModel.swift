@@ -15,7 +15,7 @@ final class UserProfileViewModel: UserProfileViewModelType {
     private let decoder: JSONDecoder
     private let apiClient: APIClientType
     private let databaseService: DatabaseServiceType
-    private let reachabilityChecker: ReachabilityCheckerType
+    private let networkConnectionListener: NetworkConnectionListenerType
 
     // MARK: Initialization
 
@@ -23,12 +23,12 @@ final class UserProfileViewModel: UserProfileViewModelType {
          decoder: JSONDecoder,
          apiClient: APIClientType,
          databaseService: DatabaseServiceType,
-         reachabilityChecker: ReachabilityCheckerType) {
+         networkConnectionListener: NetworkConnectionListenerType) {
         self.coordinator = coordinator
         self.decoder = decoder
         self.apiClient = apiClient
         self.databaseService = databaseService
-        self.reachabilityChecker = reachabilityChecker
+        self.networkConnectionListener = networkConnectionListener
     }
 
 }

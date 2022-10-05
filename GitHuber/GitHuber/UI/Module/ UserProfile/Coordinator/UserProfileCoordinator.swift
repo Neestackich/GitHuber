@@ -37,8 +37,12 @@ extension UserProfileCoordinator {
         let apiConfig = APIConfig()
         let apiClient = APIClient(apiConfig: apiConfig)
         let databaseService = DatabaseService()
-        let reachabilityChecker: ReachabilityCheckerType = ReachabilityChecker()
-        let viewModel = UserProfileViewModel(coordinator: self, decoder: decoder, apiClient: apiClient, databaseService: databaseService, reachabilityChecker: reachabilityChecker)
+        let networkConnectionListener: NetworkConnectionListenerType = NetworkConnectionListener()
+        let viewModel = UserProfileViewModel(coordinator: self,
+                                             decoder: decoder,
+                                             apiClient: apiClient,
+                                             databaseService: databaseService,
+                                             networkConnectionListener: networkConnectionListener)
 
         let storyboard = UIStoryboard(name: Constants.storyboardName, bundle: nil)
 

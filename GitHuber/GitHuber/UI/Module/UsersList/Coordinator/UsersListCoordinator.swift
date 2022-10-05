@@ -37,8 +37,14 @@ extension UsersListCoordinator {
         let apiConfig = APIConfig()
         let apiClient = APIClient(apiConfig: apiConfig)
         let databaseService = DatabaseService()
-        let reachabilityChecker: ReachabilityCheckerType = ReachabilityChecker()
-        let viewModel = UsersListViewModel(coordinator: self, decoder: decoder, apiClient: apiClient, databaseService: databaseService, reachabilityChecker: reachabilityChecker)
+        let fileManager = FileSystemManager()
+        let networkConnectionListener: NetworkConnectionListenerType = NetworkConnectionListener()
+        let viewModel = UsersListViewModel(coordinator: self,
+                                           decoder: decoder,
+                                           apiClient: apiClient,
+                                           databaseService: databaseService,
+                                           fileManager: fileManager,
+                                           networkConnectionListener: networkConnectionListener)
 
         let storyboard = UIStoryboard(name: Constants.storyboardName, bundle: nil)
 

@@ -31,8 +31,8 @@
 		3A2BE1B128ED774D008AC355 /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE1B028ED774D008AC355 /* ViewModelType.swift */; };
 		3A2BE1B328ED9D61008AC355 /* DatabaseServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE1B228ED9D61008AC355 /* DatabaseServiceType.swift */; };
 		3A2BE1B528ED9D6E008AC355 /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE1B428ED9D6E008AC355 /* DatabaseService.swift */; };
-		3A2BE1B928ED9DBD008AC355 /* ReachabilityCheckerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE1B828ED9DBD008AC355 /* ReachabilityCheckerType.swift */; };
-		3A2BE1BB28ED9DC8008AC355 /* ReachabilityChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE1BA28ED9DC8008AC355 /* ReachabilityChecker.swift */; };
+		3A2BE1B928ED9DBD008AC355 /* NetworkConnectionListenerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE1B828ED9DBD008AC355 /* NetworkConnectionListenerType.swift */; };
+		3A2BE1BB28ED9DC8008AC355 /* NetworkConnectionListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE1BA28ED9DC8008AC355 /* NetworkConnectionListener.swift */; };
 		3A2BE1BD28ED9DD7008AC355 /* APIClientType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE1BC28ED9DD7008AC355 /* APIClientType.swift */; };
 		3A2BE1BF28ED9DE2008AC355 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE1BE28ED9DE2008AC355 /* APIClient.swift */; };
 		3A2BE1C228ED9E39008AC355 /* ColorsAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A2BE1C128ED9E39008AC355 /* ColorsAssets.xcassets */; };
@@ -46,11 +46,16 @@
 		3A2BE1DA28EDE223008AC355 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE1D928EDE223008AC355 /* Endpoint.swift */; };
 		3A2BE1DE28EDE2C4008AC355 /* UsersListRequestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE1DD28EDE2C4008AC355 /* UsersListRequestData.swift */; };
 		3A2BE1E028EDE371008AC355 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE1DF28EDE371008AC355 /* User.swift */; };
-		3A2BE1E228EDE7AB008AC355 /* UserProfileResponseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE1E128EDE7AB008AC355 /* UserProfileResponseData.swift */; };
+		3A2BE1E228EDE7AB008AC355 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE1E128EDE7AB008AC355 /* UserProfile.swift */; };
 		3A2BE1E528EDE9B3008AC355 /* APIClientError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE1E428EDE9B3008AC355 /* APIClientError.swift */; };
 		3A2BE1E728EDEA46008AC355 /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE1E628EDEA46008AC355 /* ErrorResponse.swift */; };
-		3A2BE1EA28EDF798008AC355 /* CacheManagerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE1E928EDF798008AC355 /* CacheManagerType.swift */; };
-		3A2BE1EC28EDF7A3008AC355 /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE1EB28EDF7A3008AC355 /* CacheManager.swift */; };
+		3A2BE1EE28EE24AD008AC355 /* NetworkConnectionListenerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE1ED28EE24AD008AC355 /* NetworkConnectionListenerDelegate.swift */; };
+		3A2BE1F028EE2F0B008AC355 /* UserCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE1EF28EE2F0B008AC355 /* UserCellType.swift */; };
+		3A2BE1F528EE2F52008AC355 /* NormalUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE1F428EE2F52008AC355 /* NormalUserCell.swift */; };
+		3A2BE1F728EE2F5E008AC355 /* NoteUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE1F628EE2F5E008AC355 /* NoteUserCell.swift */; };
+		3A2BE1F928EE2F6D008AC355 /* InvertedUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE1F828EE2F6D008AC355 /* InvertedUserCell.swift */; };
+		3A2BE1FC28EE33BB008AC355 /* FileSystemManagerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE1FB28EE33BB008AC355 /* FileSystemManagerType.swift */; };
+		3A2BE1FE28EE33C7008AC355 /* FileSystemManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE1FD28EE33C7008AC355 /* FileSystemManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -99,8 +104,8 @@
 		3A2BE1B028ED774D008AC355 /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
 		3A2BE1B228ED9D61008AC355 /* DatabaseServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseServiceType.swift; sourceTree = "<group>"; };
 		3A2BE1B428ED9D6E008AC355 /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
-		3A2BE1B828ED9DBD008AC355 /* ReachabilityCheckerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityCheckerType.swift; sourceTree = "<group>"; };
-		3A2BE1BA28ED9DC8008AC355 /* ReachabilityChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityChecker.swift; sourceTree = "<group>"; };
+		3A2BE1B828ED9DBD008AC355 /* NetworkConnectionListenerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConnectionListenerType.swift; sourceTree = "<group>"; };
+		3A2BE1BA28ED9DC8008AC355 /* NetworkConnectionListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConnectionListener.swift; sourceTree = "<group>"; };
 		3A2BE1BC28ED9DD7008AC355 /* APIClientType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClientType.swift; sourceTree = "<group>"; };
 		3A2BE1BE28ED9DE2008AC355 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		3A2BE1C128ED9E39008AC355 /* ColorsAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = ColorsAssets.xcassets; sourceTree = "<group>"; };
@@ -114,11 +119,16 @@
 		3A2BE1D928EDE223008AC355 /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		3A2BE1DD28EDE2C4008AC355 /* UsersListRequestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersListRequestData.swift; sourceTree = "<group>"; };
 		3A2BE1DF28EDE371008AC355 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		3A2BE1E128EDE7AB008AC355 /* UserProfileResponseData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileResponseData.swift; sourceTree = "<group>"; };
+		3A2BE1E128EDE7AB008AC355 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 		3A2BE1E428EDE9B3008AC355 /* APIClientError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClientError.swift; sourceTree = "<group>"; };
 		3A2BE1E628EDEA46008AC355 /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
-		3A2BE1E928EDF798008AC355 /* CacheManagerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheManagerType.swift; sourceTree = "<group>"; };
-		3A2BE1EB28EDF7A3008AC355 /* CacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheManager.swift; sourceTree = "<group>"; };
+		3A2BE1ED28EE24AD008AC355 /* NetworkConnectionListenerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConnectionListenerDelegate.swift; sourceTree = "<group>"; };
+		3A2BE1EF28EE2F0B008AC355 /* UserCellType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCellType.swift; sourceTree = "<group>"; };
+		3A2BE1F428EE2F52008AC355 /* NormalUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalUserCell.swift; sourceTree = "<group>"; };
+		3A2BE1F628EE2F5E008AC355 /* NoteUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteUserCell.swift; sourceTree = "<group>"; };
+		3A2BE1F828EE2F6D008AC355 /* InvertedUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvertedUserCell.swift; sourceTree = "<group>"; };
+		3A2BE1FB28EE33BB008AC355 /* FileSystemManagerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSystemManagerType.swift; sourceTree = "<group>"; };
+		3A2BE1FD28EE33C7008AC355 /* FileSystemManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSystemManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -229,6 +239,10 @@
 		3A2BE18028ED5EB0008AC355 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				3A2BE1EF28EE2F0B008AC355 /* UserCellType.swift */,
+				3A2BE1F128EE2F0F008AC355 /* NormalUserCell */,
+				3A2BE1F228EE2F28008AC355 /* NoteUserCell */,
+				3A2BE1F328EE2F2F008AC355 /* InvertedUserCell */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -236,7 +250,7 @@
 		3A2BE18128ED5EC3008AC355 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				3A2BE1E828EDF788008AC355 /* CacheManager */,
+				3A2BE1FA28EE33A8008AC355 /* FileSystemManager */,
 				3A2BE1C628ED9E82008AC355 /* ImageInvertion */,
 				3A2BE18F28ED64BE008AC355 /* Database */,
 				3A2BE18E28ED64B7008AC355 /* Network */,
@@ -395,8 +409,9 @@
 		3A2BE1B728ED9D7D008AC355 /* Reachability */ = {
 			isa = PBXGroup;
 			children = (
-				3A2BE1B828ED9DBD008AC355 /* ReachabilityCheckerType.swift */,
-				3A2BE1BA28ED9DC8008AC355 /* ReachabilityChecker.swift */,
+				3A2BE1ED28EE24AD008AC355 /* NetworkConnectionListenerDelegate.swift */,
+				3A2BE1B828ED9DBD008AC355 /* NetworkConnectionListenerType.swift */,
+				3A2BE1BA28ED9DC8008AC355 /* NetworkConnectionListener.swift */,
 			);
 			path = Reachability;
 			sourceTree = "<group>";
@@ -465,7 +480,7 @@
 			isa = PBXGroup;
 			children = (
 				3A2BE1DF28EDE371008AC355 /* User.swift */,
-				3A2BE1E128EDE7AB008AC355 /* UserProfileResponseData.swift */,
+				3A2BE1E128EDE7AB008AC355 /* UserProfile.swift */,
 			);
 			path = ResponseData;
 			sourceTree = "<group>";
@@ -479,13 +494,37 @@
 			path = Errors;
 			sourceTree = "<group>";
 		};
-		3A2BE1E828EDF788008AC355 /* CacheManager */ = {
+		3A2BE1F128EE2F0F008AC355 /* NormalUserCell */ = {
 			isa = PBXGroup;
 			children = (
-				3A2BE1E928EDF798008AC355 /* CacheManagerType.swift */,
-				3A2BE1EB28EDF7A3008AC355 /* CacheManager.swift */,
+				3A2BE1F428EE2F52008AC355 /* NormalUserCell.swift */,
 			);
-			path = CacheManager;
+			path = NormalUserCell;
+			sourceTree = "<group>";
+		};
+		3A2BE1F228EE2F28008AC355 /* NoteUserCell */ = {
+			isa = PBXGroup;
+			children = (
+				3A2BE1F628EE2F5E008AC355 /* NoteUserCell.swift */,
+			);
+			path = NoteUserCell;
+			sourceTree = "<group>";
+		};
+		3A2BE1F328EE2F2F008AC355 /* InvertedUserCell */ = {
+			isa = PBXGroup;
+			children = (
+				3A2BE1F828EE2F6D008AC355 /* InvertedUserCell.swift */,
+			);
+			path = InvertedUserCell;
+			sourceTree = "<group>";
+		};
+		3A2BE1FA28EE33A8008AC355 /* FileSystemManager */ = {
+			isa = PBXGroup;
+			children = (
+				3A2BE1FB28EE33BB008AC355 /* FileSystemManagerType.swift */,
+				3A2BE1FD28EE33C7008AC355 /* FileSystemManager.swift */,
+			);
+			path = FileSystemManager;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -622,13 +661,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3A2BE1EA28EDF798008AC355 /* CacheManagerType.swift in Sources */,
 				3A2BE1DE28EDE2C4008AC355 /* UsersListRequestData.swift in Sources */,
-				3A2BE1B928ED9DBD008AC355 /* ReachabilityCheckerType.swift in Sources */,
+				3A2BE1B928ED9DBD008AC355 /* NetworkConnectionListenerType.swift in Sources */,
 				3A2BE1B528ED9D6E008AC355 /* DatabaseService.swift in Sources */,
-				3A2BE1BB28ED9DC8008AC355 /* ReachabilityChecker.swift in Sources */,
+				3A2BE1BB28ED9DC8008AC355 /* NetworkConnectionListener.swift in Sources */,
 				3A2BE19528ED65F5008AC355 /* UserProfileView.swift in Sources */,
-				3A2BE1EC28EDF7A3008AC355 /* CacheManager.swift in Sources */,
 				3A2BE1E028EDE371008AC355 /* User.swift in Sources */,
 				3A2BE1B328ED9D61008AC355 /* DatabaseServiceType.swift in Sources */,
 				3A2BE1C828ED9EA3008AC355 /* ImageInversionType.swift in Sources */,
@@ -638,20 +675,27 @@
 				3A2BE1A128ED6D52008AC355 /* UsersListCoordinator.swift in Sources */,
 				3A2BE1AF28ED6E5E008AC355 /* UserProfileCoordinator.swift in Sources */,
 				3A2BE1CF28EDD96F008AC355 /* EndpointMethod.swift in Sources */,
-				3A2BE1E228EDE7AB008AC355 /* UserProfileResponseData.swift in Sources */,
+				3A2BE1E228EDE7AB008AC355 /* UserProfile.swift in Sources */,
 				3A2BE1BD28ED9DD7008AC355 /* APIClientType.swift in Sources */,
 				3A2BE1A328ED6DAD008AC355 /* UsersListCoordinatorType.swift in Sources */,
 				3A2BE1DA28EDE223008AC355 /* Endpoint.swift in Sources */,
+				3A2BE1EE28EE24AD008AC355 /* NetworkConnectionListenerDelegate.swift in Sources */,
 				3A2BE1E528EDE9B3008AC355 /* APIClientError.swift in Sources */,
 				3A2BE19128ED65D8008AC355 /* UsersListView.swift in Sources */,
+				3A2BE1F528EE2F52008AC355 /* NormalUserCell.swift in Sources */,
+				3A2BE1F728EE2F5E008AC355 /* NoteUserCell.swift in Sources */,
+				3A2BE1F928EE2F6D008AC355 /* InvertedUserCell.swift in Sources */,
 				3A2BE14B28ED5DE3008AC355 /* AppDelegate.swift in Sources */,
 				3A2BE1B128ED774D008AC355 /* ViewModelType.swift in Sources */,
+				3A2BE1F028EE2F0B008AC355 /* UserCellType.swift in Sources */,
 				3A2BE14D28ED5DE3008AC355 /* SceneDelegate.swift in Sources */,
 				3A2BE1AD28ED6E4B008AC355 /* UserProfileCoordinatorType.swift in Sources */,
 				3A2BE15528ED5DE4008AC355 /* GitHuber.xcdatamodeld in Sources */,
+				3A2BE1FE28EE33C7008AC355 /* FileSystemManager.swift in Sources */,
 				3A2BE1A728ED6DDC008AC355 /* UsersListViewModel.swift in Sources */,
 				3A2BE19B28ED679B008AC355 /* Coordinator.swift in Sources */,
 				3A2BE1D828EDDBF1008AC355 /* APIConfigType.swift in Sources */,
+				3A2BE1FC28EE33BB008AC355 /* FileSystemManagerType.swift in Sources */,
 				3A2BE1A928ED6DF7008AC355 /* UserProfileViewModelType.swift in Sources */,
 				3A2BE19D28ED67C2008AC355 /* BaseView.swift in Sources */,
 				3A2BE1E728EDEA46008AC355 /* ErrorResponse.swift in Sources */,
