@@ -15,12 +15,38 @@ final class FileSystemManager: FileSystemManagerType {
 
 extension FileSystemManager {
 
-    func getCachedFile(with id: String) -> Data? {
-        return nil
+    func fileExists(_ resourceId: String, type: FileType) -> Bool {
+        do {
+            let cacheDirectory = try FileManager.default.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+            let fileURL = cacheDirectory.appendingPathComponent(resourceId + type.rawValue)
+
+            return FileManager.default.fileExists(atPath: fileURL.path)
+        } catch {
+            return false
+        }
     }
 
-    func saveFileToCache(with id: String) -> Bool {
-        return true
+    func getFileFromCache(_ resourceId: String, type: FileType) -> Data? {
+        do {
+            let cacheDirectory = try getCacheDirectory()
+            let fileURL = cacheDirectory.appendingPathComponent(resourceId + type.rawValue)
+            let data = try Data(contentsOf: fileURL)
+
+            return data
+        } catch {
+            return nil
+        }
+    }
+
+    func saveFileToCache(_ resourceId: String, type: FileType, data: Data) {
+        do {
+            let cacheDirectory = try getCacheDirectory()
+            let fileURL = cacheDirectory.appendingPathComponent(resourceId + type.rawValue)
+
+            try data.write(to: fileURL)
+        } catch {
+            print("File manager error: \(error)")
+        }
     }
 
 }
@@ -29,12 +55,8 @@ extension FileSystemManager {
 
 private extension FileSystemManager {
 
-    func getCacheDirectory() -> URL? {
-        return FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first
-    }
-
-    func fileExists(at path: String) -> Bool {
-        return FileManager.default.fileExists(atPath: path)
+    private func getCacheDirectory() throws -> URL {
+        return try FileManager.default.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
     }
 
 }

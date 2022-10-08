@@ -6,23 +6,43 @@
 //
 
 import Foundation
+import Network
 
-final class NetworkConnectionListener: NSObject, NetworkConnectionListenerType {
+final class NetworkConnectionListener: NetworkConnectionListenerType {
+
+     private let monitor = NWPathMonitor()
 
     weak var delegate: NetworkConnectionListenerDelegate?
 
-}
-
-// MARK: - URLSessionDelegate
-
-extension NetworkConnectionListener: URLSessionTaskDelegate {
-
-    func urlSession(_ session: URLSession, taskIsWaitingForConnectivity task: URLSessionTask) {
-        delegate?.handleOfflineMode()
+    init() {
+        setupMonitoring()
     }
 
-    func urlSession(_ session: URLSession, task: URLSessionTask, willBeginDelayedRequest: URLRequest, completionHandler: (URLSession.DelayedRequestDisposition, URLRequest?) -> Void) {
-        delegate?.handleOnlineMode()
+}
+
+// MARK: - Public
+
+extension NetworkConnectionListener {
+
+    func startMonitoring() {
+        monitor.start(queue: .global())
+    }
+
+}
+
+// MARK: - Private
+
+extension NetworkConnectionListener {
+
+    private func setupMonitoring() {
+        monitor.pathUpdateHandler = { [weak self] path in
+            switch path.status {
+            case .satisfied:
+                self?.delegate?.handleOnlineMode()
+            default:
+                self?.delegate?.handleOfflineMode()
+            }
+        }
     }
 
 }

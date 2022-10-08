@@ -11,4 +11,6 @@ protocol NetworkConnectionListenerType {
 
     var delegate: NetworkConnectionListenerDelegate? { get set }
 
+    func startMonitoring()
+
 }

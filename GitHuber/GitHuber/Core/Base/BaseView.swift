@@ -9,6 +9,6 @@ import UIKit
 
 class BaseView<ViewModel: ViewModelType>: UIViewController {
 
-    var viewModel: ViewModelType?
+    var viewModel: ViewModel?
 
 }

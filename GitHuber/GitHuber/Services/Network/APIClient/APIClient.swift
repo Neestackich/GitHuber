@@ -11,16 +11,11 @@ final class APIClient: APIClientType {
 
     // MARK: Properties
 
-    private let apiConfig: APIConfig
     private let serialQueue = DispatchQueue(label: "com.GitHuber.SerialNetworkRequestQueue", qos: .background, attributes: .concurrent)
     private let group = DispatchGroup()
     private let semaphore = DispatchSemaphore(value: 1)
 
-    // MARK: Initialization
-
-    init(apiConfig: APIConfig) {
-        self.apiConfig = apiConfig
-    }
+    weak var delegate: APIClientDelegate?
 
 }
 
@@ -34,6 +29,8 @@ extension APIClient {
             sself.group.enter()
             sself.semaphore.wait()
 
+            self?.delegate?.handleLoadingStart()
+
             sself.request(endpoint: endpoint) { response in
                 switch response {
                 case .success(let data):
@@ -44,6 +41,10 @@ extension APIClient {
                 sself.group.leave()
                 sself.semaphore.signal()
             }
+        }
+
+        group.notify(queue: .main) { [weak self] in
+            self?.delegate?.handleLoadingFinish()
         }
     }
 
@@ -75,9 +76,7 @@ private extension APIClient {
     }
 
     private func setupRequest(endpoint: Endpoint) throws -> URLRequest {
-        let urlString = apiConfig.baseBackend + endpoint.path
-
-        guard let url = URL(string: urlString) else { throw APIClientError.urlCreateError }
+        guard let url = URL(string: endpoint.path) else { throw APIClientError.urlCreateError }
 
         var request = URLRequest(url: url)
         request.httpMethod = endpoint.method.rawValue

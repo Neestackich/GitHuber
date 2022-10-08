@@ -8,6 +8,7 @@
 import Foundation
 
 protocol FileSystemManagerType {
-    func getCachedFile(with id: String) -> Data?
-    func saveFileToCache(with id: String) -> Bool
+    func fileExists(_ resourceId: String, type: FileType) -> Bool
+    func getFileFromCache(_ resourceId: String, type: FileType) -> Data?
+    func saveFileToCache(_ resourceId: String, type: FileType, data: Data)
 }

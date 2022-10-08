@@ -18,10 +18,13 @@ struct Endpoint {
 }
 
 extension Endpoint {
-    static func getUsersList(userNumberToStartFrom: Int) -> Endpoint {
-        return .init(path: "/users?since=\(userNumberToStartFrom)", method: .get)
+    static func getUsersList(apiConfig: APIConfigType, userNumberToStartFrom: Int) -> Endpoint {
+        return .init(path: "\(apiConfig.baseBackend)/users?since=\(userNumberToStartFrom)", method: .get)
     }
-    static func getUserProfile(username: String) -> Endpoint {
-        return .init(path: "/users/\(username)", method: .get)
+    static func getUserProfile(apiConfig: APIConfigType, username: String) -> Endpoint {
+        return .init(path: "\(apiConfig.baseBackend)/users/\(username)", method: .get)
+    }
+    static func getImage(path: String) -> Endpoint {
+        return .init(path: path, method: .get)
     }
 }

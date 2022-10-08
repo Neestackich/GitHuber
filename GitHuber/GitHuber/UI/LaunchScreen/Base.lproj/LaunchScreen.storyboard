@@ -4,8 +4,8 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -17,18 +17,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6ZK-am-Bil">
-                                <rect key="frame" x="157.66666666666666" y="411.66666666666669" width="74.666666666666657" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreenImage" translatesAutoresizingMaskIntoConstraints="NO" id="mM6-3u-q2k">
+                                <rect key="frame" x="131" y="358" width="128" height="128"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="mM6-3u-q2k" secondAttribute="height" multiplier="1:1" id="ng9-wn-D8J"/>
+                                    <constraint firstAttribute="height" constant="128" id="qLN-5T-rOK"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" name="GrayBackground"/>
                         <constraints>
-                            <constraint firstItem="6ZK-am-Bil" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="2xm-Rd-uMv"/>
-                            <constraint firstItem="6ZK-am-Bil" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="ydW-XO-efQ"/>
+                            <constraint firstItem="mM6-3u-q2k" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="UVA-pH-NEW"/>
+                            <constraint firstItem="mM6-3u-q2k" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="bD7-KW-15K"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -38,8 +39,9 @@
         </scene>
     </scenes>
     <resources>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
+        <image name="LaunchScreenImage" width="800" height="665"/>
+        <namedColor name="GrayBackground">
+            <color red="0.94900000095367432" green="0.94900000095367432" blue="0.96899998188018799" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>
