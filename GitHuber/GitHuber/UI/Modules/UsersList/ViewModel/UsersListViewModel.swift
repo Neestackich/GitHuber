@@ -14,6 +14,8 @@ final class UsersListViewModel: UsersListViewModelType {
     private var users: [UserEntity] = []
     private var sortedUsers: [UserEntity] = []
 
+    private var paginationEnabled = true
+
     private let coordinator: UsersListCoordinatorType
     private let decoder: JSONDecoder
     private let apiClient: APIClientType
@@ -50,7 +52,7 @@ final class UsersListViewModel: UsersListViewModelType {
     // MARK: Lifecycle
 
     func onViewDidLoad() {
-        loadUsersFromDataBase(from: users.count)
+        loadUsersFromDataBase()
         startConnectionListener()
         loadUsersFromBackend(from: 0)
     }
@@ -95,7 +97,7 @@ extension UsersListViewModel {
     }
 
     func searchBarTextDidBeginEditing() {
-        // disable pagination
+        paginationEnabled = false
     }
 
     func searchBarTextDidChange(with query: String) {
@@ -116,9 +118,16 @@ extension UsersListViewModel {
     }
 
     func searchBarTextDidEndEditing() {
+        paginationEnabled = true
         sortedUsers = users
         DispatchQueue.main.async { [weak self] in
             self?.reloadData?()
+        }
+    }
+
+    func paginate() {
+        if paginationEnabled, let lastUserId = users.last?.id {
+            loadUsersFromBackend(from: Int(lastUserId))
         }
     }
 
@@ -132,25 +141,18 @@ private extension UsersListViewModel {
         networkConnectionListener.startMonitoring()
     }
 
-    private func loadUsersFromDataBase(from: Int) {
-        databaseService.getUsers(from: from) { [weak self] result in
+    private func loadUsersFromDataBase() {
+        databaseService.getUsers() { [weak self] result in
             switch result {
             case .success(let users):
-                if from == 0 {
-                    self?.users = users
-                    self?.sortedUsers = users
-                } else {
-                    self?.users += users
-                    self?.sortedUsers += users
-                }
+                self?.users = users
+                self?.sortedUsers = users
 
                 DispatchQueue.main.async {
                     self?.reloadData?()
                 }
             case .failure(let error):
-                // show error alert
                 print(error)
-                break
             }
         }
     }
@@ -160,21 +162,16 @@ private extension UsersListViewModel {
             switch response {
             case .success(let data):
                 if let users = try? self?.decoder.decode([User].self, from: data) {
-
                     for user in users {
                         self?.databaseService.saveUser(user)
                     }
 
-                    self?.loadUsersFromDataBase(from: from)
+                    self?.loadUsersFromDataBase()
                 } else if let errorData = try? self?.decoder.decode(ErrorResponse.self, from: data) {
-                    // show alert pop up here
                     print(errorData)
                 }
-                break
             case .failure(let error):
                 print(error)
-                break
-                // show alert pop up here
             }
         }
     }

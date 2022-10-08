@@ -25,8 +25,8 @@
         <attribute name="subscriptionsUrl" optional="YES" attributeType="String"/>
         <attribute name="type" optional="YES" attributeType="String"/>
         <attribute name="url" optional="YES" attributeType="String"/>
-        <relationship name="note" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="NoteEntity" inverseName="user" inverseEntity="NoteEntity"/>
-        <relationship name="profile" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserProfileEntity" inverseName="user" inverseEntity="UserProfileEntity"/>
+        <relationship name="note" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="NoteEntity" inverseName="user" inverseEntity="NoteEntity"/>
+        <relationship name="profile" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="UserProfileEntity" inverseName="user" inverseEntity="UserProfileEntity"/>
     </entity>
     <entity name="UserProfileEntity" representedClassName="UserProfileEntity" syncable="YES">
         <attribute name="avatarUrl" optional="YES" attributeType="String"/>

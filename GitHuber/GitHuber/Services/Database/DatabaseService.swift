@@ -10,14 +10,8 @@ import CoreData
 
 final class DatabaseService: DatabaseServiceType {
 
-    private let fetchLimit: Int
-
     let readContext = (UIApplication.shared.delegate as? AppDelegate)?.getReadContext()
     let writeContext = (UIApplication.shared.delegate as? AppDelegate)?.getWriteContext()
-
-    init(fetchLimit: Int) {
-        self.fetchLimit = fetchLimit
-    }
 
 }
 
@@ -40,7 +34,7 @@ extension DatabaseService {
         }
     }
 
-    func getUsers(from: Int, completion: @escaping (Result<[UserEntity], Error>) -> Void) {
+    func getUsers(completion: @escaping (Result<[UserEntity], Error>) -> Void) {
         guard let readContext = readContext else {
             completion(.failure(DatabaseError.contextError))
             return
@@ -49,8 +43,6 @@ extension DatabaseService {
         let request = UserEntity.fetchRequest()
         let sortById = NSSortDescriptor(key: "id", ascending: true)
         request.sortDescriptors = [sortById]
-        request.fetchLimit = fetchLimit
-        request.fetchOffset = from
 
         do {
             let users = try readContext.fetch(request)
@@ -73,6 +65,7 @@ extension DatabaseService {
             return
         }
 
+        print("New user saved: \(user.login) + \(user.id)")
         let userEntity = UserEntity(context: writeContext)
         userEntity.login = user.login
         userEntity.id = Int64(user.id)
@@ -100,8 +93,10 @@ extension DatabaseService {
             return
         }
 
+        print("New user updated: \(updatedUser.login) + \(updatedUser.id)")
+
         let fetchRequest = UserEntity.fetchRequest()
-        let idPredicate = NSPredicate(format: "id = %@", String(updatedUser.id))
+        let idPredicate = NSPredicate(format: "login = %@", updatedUser.login)
         fetchRequest.predicate = idPredicate
 
         do {

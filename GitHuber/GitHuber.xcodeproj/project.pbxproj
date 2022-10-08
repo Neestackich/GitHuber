@@ -74,13 +74,13 @@
 		3A2BE26D28F0756E008AC355 /* NoteUserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A2BE26C28F0756E008AC355 /* NoteUserCell.xib */; };
 		3A2BE26F28F075AE008AC355 /* InvertedUserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A2BE26E28F075AE008AC355 /* InvertedUserCell.xib */; };
 		3A2BE27128F08987008AC355 /* FileType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE27028F08987008AC355 /* FileType.swift */; };
-		3A2BE27A28F1961E008AC355 /* UserProfileEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE27428F1961E008AC355 /* UserProfileEntity+CoreDataClass.swift */; };
-		3A2BE27B28F1961E008AC355 /* UserProfileEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE27528F1961E008AC355 /* UserProfileEntity+CoreDataProperties.swift */; };
-		3A2BE27C28F1961E008AC355 /* NoteEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE27628F1961E008AC355 /* NoteEntity+CoreDataClass.swift */; };
-		3A2BE27D28F1961E008AC355 /* NoteEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE27728F1961E008AC355 /* NoteEntity+CoreDataProperties.swift */; };
-		3A2BE27E28F1961E008AC355 /* UserEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE27828F1961E008AC355 /* UserEntity+CoreDataClass.swift */; };
-		3A2BE27F28F1961E008AC355 /* UserEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE27928F1961E008AC355 /* UserEntity+CoreDataProperties.swift */; };
 		3A2BE28128F19B19008AC355 /* APIClientDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE28028F19B19008AC355 /* APIClientDelegate.swift */; };
+		3A2BE28828F2172F008AC355 /* NoteEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE28228F2172F008AC355 /* NoteEntity+CoreDataClass.swift */; };
+		3A2BE28928F2172F008AC355 /* NoteEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE28328F2172F008AC355 /* NoteEntity+CoreDataProperties.swift */; };
+		3A2BE28A28F2172F008AC355 /* UserEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE28428F2172F008AC355 /* UserEntity+CoreDataClass.swift */; };
+		3A2BE28B28F2172F008AC355 /* UserEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE28528F2172F008AC355 /* UserEntity+CoreDataProperties.swift */; };
+		3A2BE28C28F2172F008AC355 /* UserProfileEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE28628F2172F008AC355 /* UserProfileEntity+CoreDataClass.swift */; };
+		3A2BE28D28F2172F008AC355 /* UserProfileEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE28728F2172F008AC355 /* UserProfileEntity+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -172,13 +172,13 @@
 		3A2BE26C28F0756E008AC355 /* NoteUserCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NoteUserCell.xib; sourceTree = "<group>"; };
 		3A2BE26E28F075AE008AC355 /* InvertedUserCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InvertedUserCell.xib; sourceTree = "<group>"; };
 		3A2BE27028F08987008AC355 /* FileType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileType.swift; sourceTree = "<group>"; };
-		3A2BE27428F1961E008AC355 /* UserProfileEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserProfileEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
-		3A2BE27528F1961E008AC355 /* UserProfileEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserProfileEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		3A2BE27628F1961E008AC355 /* NoteEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NoteEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
-		3A2BE27728F1961E008AC355 /* NoteEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NoteEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		3A2BE27828F1961E008AC355 /* UserEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
-		3A2BE27928F1961E008AC355 /* UserEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		3A2BE28028F19B19008AC355 /* APIClientDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClientDelegate.swift; sourceTree = "<group>"; };
+		3A2BE28228F2172F008AC355 /* NoteEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NoteEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		3A2BE28328F2172F008AC355 /* NoteEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NoteEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		3A2BE28428F2172F008AC355 /* UserEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		3A2BE28528F2172F008AC355 /* UserEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		3A2BE28628F2172F008AC355 /* UserProfileEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserProfileEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		3A2BE28728F2172F008AC355 /* UserProfileEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserProfileEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -569,12 +569,12 @@
 		3A2BE20928EECC81008AC355 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
-				3A2BE27428F1961E008AC355 /* UserProfileEntity+CoreDataClass.swift */,
-				3A2BE27528F1961E008AC355 /* UserProfileEntity+CoreDataProperties.swift */,
-				3A2BE27628F1961E008AC355 /* NoteEntity+CoreDataClass.swift */,
-				3A2BE27728F1961E008AC355 /* NoteEntity+CoreDataProperties.swift */,
-				3A2BE27828F1961E008AC355 /* UserEntity+CoreDataClass.swift */,
-				3A2BE27928F1961E008AC355 /* UserEntity+CoreDataProperties.swift */,
+				3A2BE28228F2172F008AC355 /* NoteEntity+CoreDataClass.swift */,
+				3A2BE28328F2172F008AC355 /* NoteEntity+CoreDataProperties.swift */,
+				3A2BE28428F2172F008AC355 /* UserEntity+CoreDataClass.swift */,
+				3A2BE28528F2172F008AC355 /* UserEntity+CoreDataProperties.swift */,
+				3A2BE28628F2172F008AC355 /* UserProfileEntity+CoreDataClass.swift */,
+				3A2BE28728F2172F008AC355 /* UserProfileEntity+CoreDataProperties.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -851,26 +851,27 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A2BE1B928ED9DBD008AC355 /* NetworkConnectionListenerType.swift in Sources */,
+				3A2BE28A28F2172F008AC355 /* UserEntity+CoreDataClass.swift in Sources */,
 				3A2BE26928F0658B008AC355 /* InvertedUserCellViewModelType.swift in Sources */,
 				3A2BE1B528ED9D6E008AC355 /* DatabaseService.swift in Sources */,
 				3A2BE1BB28ED9DC8008AC355 /* NetworkConnectionListener.swift in Sources */,
 				3A2BE24328EF659A008AC355 /* CoreDataStack.swift in Sources */,
 				3A2BE19528ED65F5008AC355 /* UserProfileView.swift in Sources */,
 				3A2BE24B28F01753008AC355 /* NSManagedObjectContext+Extension.swift in Sources */,
+				3A2BE28D28F2172F008AC355 /* UserProfileEntity+CoreDataProperties.swift in Sources */,
 				3A2BE1E028EDE371008AC355 /* User.swift in Sources */,
 				3A2BE27128F08987008AC355 /* FileType.swift in Sources */,
 				3A2BE1B328ED9D61008AC355 /* DatabaseServiceType.swift in Sources */,
 				3A2BE1C828ED9EA3008AC355 /* ImageInversionType.swift in Sources */,
 				3A2BE1BF28ED9DE2008AC355 /* APIClient.swift in Sources */,
+				3A2BE28C28F2172F008AC355 /* UserProfileEntity+CoreDataClass.swift in Sources */,
 				3A2BE1AB28ED6E04008AC355 /* UserProfileViewModel.swift in Sources */,
-				3A2BE27A28F1961E008AC355 /* UserProfileEntity+CoreDataClass.swift in Sources */,
 				3A2BE1D228EDD9E2008AC355 /* APIConfig.swift in Sources */,
 				3A2BE22228EED6DA008AC355 /* CellType.swift in Sources */,
 				3A2BE1A128ED6D52008AC355 /* UsersListCoordinator.swift in Sources */,
 				3A2BE1AF28ED6E5E008AC355 /* UserProfileCoordinator.swift in Sources */,
 				3A2BE20828EECB98008AC355 /* UserModelType.swift in Sources */,
 				3A2BE1CF28EDD96F008AC355 /* EndpointMethod.swift in Sources */,
-				3A2BE27E28F1961E008AC355 /* UserEntity+CoreDataClass.swift in Sources */,
 				3A2BE1E228EDE7AB008AC355 /* UserProfile.swift in Sources */,
 				3A2BE1BD28ED9DD7008AC355 /* APIClientType.swift in Sources */,
 				3A2BE1A328ED6DAD008AC355 /* UsersListCoordinatorType.swift in Sources */,
@@ -880,6 +881,7 @@
 				3A2BE26528F03C8E008AC355 /* DatabaseError.swift in Sources */,
 				3A2BE20428EECB00008AC355 /* NoteUserCellViewModel.swift in Sources */,
 				3A2BE22828EEECA3008AC355 /* NormalUser.swift in Sources */,
+				3A2BE28828F2172F008AC355 /* NoteEntity+CoreDataClass.swift in Sources */,
 				3A2BE1E528EDE9B3008AC355 /* APIClientError.swift in Sources */,
 				3A2BE19128ED65D8008AC355 /* UsersListView.swift in Sources */,
 				3A2BE1F528EE2F52008AC355 /* NormalUserCell.swift in Sources */,
@@ -887,28 +889,26 @@
 				3A2BE1F928EE2F6D008AC355 /* InvertedUserCell.swift in Sources */,
 				3A2BE14B28ED5DE3008AC355 /* AppDelegate.swift in Sources */,
 				3A2BE1B128ED774D008AC355 /* ViewModelType.swift in Sources */,
-				3A2BE27C28F1961E008AC355 /* NoteEntity+CoreDataClass.swift in Sources */,
 				3A2BE1F028EE2F0B008AC355 /* UserCellType.swift in Sources */,
 				3A2BE14D28ED5DE3008AC355 /* SceneDelegate.swift in Sources */,
-				3A2BE27B28F1961E008AC355 /* UserProfileEntity+CoreDataProperties.swift in Sources */,
 				3A2BE22E28EEF226008AC355 /* Section.swift in Sources */,
 				3A2BE1AD28ED6E4B008AC355 /* UserProfileCoordinatorType.swift in Sources */,
 				3A2BE15528ED5DE4008AC355 /* GitHuber.xcdatamodeld in Sources */,
 				3A2BE1FE28EE33C7008AC355 /* FileSystemManager.swift in Sources */,
 				3A2BE1A728ED6DDC008AC355 /* UsersListViewModel.swift in Sources */,
-				3A2BE27D28F1961E008AC355 /* NoteEntity+CoreDataProperties.swift in Sources */,
 				3A2BE19B28ED679B008AC355 /* CoordinatorType.swift in Sources */,
 				3A2BE1D828EDDBF1008AC355 /* APIConfigType.swift in Sources */,
 				3A2BE1FC28EE33BB008AC355 /* FileSystemManagerType.swift in Sources */,
 				3A2BE1A928ED6DF7008AC355 /* UserProfileViewModelType.swift in Sources */,
 				3A2BE26B28F0684A008AC355 /* UIView+Extension.swift in Sources */,
-				3A2BE27F28F1961E008AC355 /* UserEntity+CoreDataProperties.swift in Sources */,
 				3A2BE19D28ED67C2008AC355 /* BaseView.swift in Sources */,
 				3A2BE20228EECAEC008AC355 /* NormalUserCellViewModel.swift in Sources */,
 				3A2BE20628EECB1E008AC355 /* InvertedUserCellViewModel.swift in Sources */,
 				3A2BE20B28EECF63008AC355 /* BaseCell.swift in Sources */,
 				3A2BE1E728EDEA46008AC355 /* ErrorResponse.swift in Sources */,
 				3A2BE23A28EF3E43008AC355 /* NormalUserCellViewModelType.swift in Sources */,
+				3A2BE28B28F2172F008AC355 /* UserEntity+CoreDataProperties.swift in Sources */,
+				3A2BE28928F2172F008AC355 /* NoteEntity+CoreDataProperties.swift in Sources */,
 				3A2BE24028EF4B6C008AC355 /* NoteUserCellViewModelType.swift in Sources */,
 				3A2BE1A528ED6DCF008AC355 /* UsersListViewModelType.swift in Sources */,
 				3A2BE20D28EED268008AC355 /* CellViewModelType.swift in Sources */,

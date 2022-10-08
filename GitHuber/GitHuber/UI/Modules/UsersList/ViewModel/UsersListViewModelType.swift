@@ -19,6 +19,7 @@ protocol UsersListViewModelType: ViewModelType {
     func userCellTap()
     func getUsersCount() -> Int
     func getCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UserCellType?
+    func paginate()
 
     // MARK: - SearchBar
     func searchBarTextDidBeginEditing()

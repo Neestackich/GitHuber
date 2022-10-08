@@ -9,7 +9,7 @@ import Foundation
 
 protocol DatabaseServiceType {
     func usersCount() -> Int
-    func getUsers(from: Int, completion: @escaping (Result<[UserEntity], Error>) -> Void)
+    func getUsers(completion: @escaping (Result<[UserEntity], Error>) -> Void)
     func saveUser(_ user: User)
     func saveNewUser(_ user: User)
     func updateUser(_ updatedUser: User)

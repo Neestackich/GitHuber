@@ -37,7 +37,7 @@ extension UserProfileCoordinator {
         let apiConfig = APIConfig()
         let networkConnectionListener = NetworkConnectionListener()
         let apiClient = APIClient()
-        let databaseService = DatabaseService(fetchLimit: 30)
+        let databaseService = DatabaseService()
         let viewModel = UserProfileViewModel(coordinator: self,
                                              decoder: decoder,
                                              apiClient: apiClient,

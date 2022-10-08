@@ -37,7 +37,7 @@ extension UsersListCoordinator {
         let apiConfig = APIConfig()
         let networkConnectionListener = NetworkConnectionListener()
         let apiClient = APIClient()
-        let databaseService = DatabaseService(fetchLimit: 30)
+        let databaseService = DatabaseService()
         let fileManager = FileSystemManager()
         
 

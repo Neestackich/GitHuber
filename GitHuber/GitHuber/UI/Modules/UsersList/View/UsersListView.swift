@@ -48,12 +48,27 @@ final class UsersListView: BaseView<UsersListViewModel> {
         return activityIndicator
     }()
 
+    private lazy var tableViewFooter: UIView = {
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 64))
+        footerView.backgroundColor = .clear
+
+        let activityIndicator = UIActivityIndicatorView()
+        activityIndicator.color = .gray
+        activityIndicator.style = .medium
+        footerView.addSubview(activityIndicator)
+        activityIndicator.center = footerView.center
+        activityIndicator.startAnimating()
+
+        return footerView
+    }()
+
     private struct Constants {
         static let searchBarTintColor = "SearchBarTint"
         static let grayBackground = "GrayBackground"
         static let offlineViewBackground = "OfflineViewBackground"
         static let labelsTint = "OfflineLabelTextColor"
         static let offlineViewText = "Offline mode enabled"
+        static let navBarTitle = "GitHub Users"
     }
 
     // MARK: Lifecycle
@@ -63,7 +78,6 @@ final class UsersListView: BaseView<UsersListViewModel> {
 
         setup()
         bindViewModel()
-
         viewModel?.onViewDidLoad()
     }
 
@@ -97,6 +111,7 @@ private extension UsersListView {
     }
 
     private func setUpNavigationBar() {
+        self.title = Constants.navBarTitle
         navigationController?.navigationBar.tintColor = UIColor(named: Constants.searchBarTintColor)
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = true
@@ -111,7 +126,6 @@ private extension UsersListView {
         tableView.backgroundColor = UIColor(named: Constants.grayBackground)
 
         tableView.translatesAutoresizingMaskIntoConstraints = false
-
         tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
@@ -169,7 +183,7 @@ extension UsersListView: UISearchBarDelegate {
     }
 
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        // viewModel?.disablePagination()
+        viewModel?.searchBarTextDidBeginEditing()
     }
 
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
@@ -177,33 +191,6 @@ extension UsersListView: UISearchBarDelegate {
     }
 
 }
-
-//// MARK: - DiffableDataSource
-//
-//extension UsersListView {
-//
-//    private func makeDataSource(tableView: UITableView) -> UITableViewDiffableDataSource<Section, NormalUser> {
-//        return UITableViewDiffableDataSource<Section, NormalUser>(tableView: tableView, cellProvider: { (tableView, indexPath, user) -> UITableViewCell? in
-//            let cell = tableView.dequeueReusableCell(withIdentifier: "", for: indexPath)
-//
-//            return cell
-//        })
-//    }
-//
-//    private func updateTable(with models: [MenuItemViewModel], animate: Bool = false) {
-//        var snapshot = MenuItemsDataSourceSnapshot()
-//        snapshot.appendSections(Section.allCases)
-//        snapshot.appendItems(models, toSection: .items)
-//        dataSource?.apply(snapshot, animatingDifferences: animate)
-//    }
-//
-//    private func provideCell(tableView: UITableView, indexPath: IndexPath, model: NormalUser) -> UICollectionViewCell {
-//        let cell = collectionView.dequeueReusableCell(MenuItemCell.self, for: indexPath)
-//        cell.configure(with: model.name, color: model.color)
-//        return cell
-//    }
-//
-//}
 
 // MAR: - UITableViewDataSource, UITableViewDelegate
 
@@ -217,12 +204,26 @@ extension UsersListView: UITableViewDataSource, UITableViewDelegate {
         guard let cell = viewModel?.getCell(tableView, cellForRowAt: indexPath) else {
             return UITableViewCell()
         }
+
         return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         viewModel?.userCellTap()
+    }
+
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let usersCount = viewModel?.getUsersCount() else {
+            return
+        }
+
+        tableView.tableFooterView = tableViewFooter
+
+        if indexPath.row == usersCount - 1 {
+            tableView.tableFooterView = nil
+            viewModel?.paginate()
+        }
     }
 
 }
