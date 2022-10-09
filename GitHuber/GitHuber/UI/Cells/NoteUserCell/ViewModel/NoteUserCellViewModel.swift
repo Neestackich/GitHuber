@@ -43,17 +43,28 @@ extension NoteUserCellViewModel {
 
         cell.viewModel = self
         cell.bindViewModel()
-        let userData = UserCellData(username: userEntity.login ?? "", url: userEntity.htmlUrl ?? "")
+        let userData = UserCellBindableData(username: userEntity.login ?? "", url: userEntity.htmlUrl ?? "", isSeen: userEntity.isSeen)
         cell.bindData(userData)
 
         guard let avatarUrl = userEntity.avatarUrl, let avatarName = avatarUrl.components(separatedBy: "/").last else {
             return cell
         }
 
-        if let imageData = fileManager.getFileFromCache(avatarName, type: .png) {
-            let avatar = UIImage(data: imageData)
-            updateAvatar?(avatar)
+        if fileManager.fileExists(avatarName, type: .png) {
+            fileManager.getFileFromCache(avatarName, type: .png) { [weak self] result in
+                switch result {
+                case .success(let data):
+                    let avatar = UIImage(data: data)
+
+                    DispatchQueue.main.async {
+                        self?.updateAvatar?(avatar)
+                    }
+                case .failure(let error):
+                    print(error)
+                }
+            }
         } else {
+            showLoading?(true)
             downloadAvatar(url: avatarUrl)
         }
 
@@ -77,6 +88,7 @@ private extension NoteUserCellViewModel {
                 self?.fileManager.saveFileToCache(avatarName, type: .png, data: data)
 
                 DispatchQueue.main.async {
+                    self?.showLoading?(false)
                     self?.updateAvatar?(avatar)
                 }
             case .failure(_):

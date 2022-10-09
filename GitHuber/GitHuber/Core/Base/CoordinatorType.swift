@@ -9,5 +9,4 @@ import UIKit
 
 protocol CoordinatorType: AnyObject {
     init(navigationController: UINavigationController?)
-    func start()
 }

@@ -9,6 +9,8 @@ import UIKit
 
 final class UsersListView: BaseView<UsersListViewModel> {
 
+    // MARK: Properties
+
     private lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.delegate = self
@@ -69,6 +71,7 @@ final class UsersListView: BaseView<UsersListViewModel> {
         static let labelsTint = "OfflineLabelTextColor"
         static let offlineViewText = "Offline mode enabled"
         static let navBarTitle = "GitHub Users"
+        static let whiteBackground = "WhiteBackground"
     }
 
     // MARK: Lifecycle
@@ -81,19 +84,10 @@ final class UsersListView: BaseView<UsersListViewModel> {
         viewModel?.onViewDidLoad()
     }
 
-    private func bindViewModel() {
-        viewModel?.reloadData = { [weak self] in
-            self?.tableView.reloadData()
-        }
-        viewModel?.endTableViewRefreshing = { [weak self] in
-            self?.tableView.refreshControl?.endRefreshing()
-        }
-        viewModel?.showLoading = { [weak self] show in
-            self?.showLoading(show)
-        }
-        viewModel?.showOfflineView = { [weak self] show in
-            self?.showOfflineView(show)
-        }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        viewModel?.onViewWillAppear()
     }
 
 }
@@ -114,6 +108,7 @@ private extension UsersListView {
         self.title = Constants.navBarTitle
         navigationController?.navigationBar.tintColor = UIColor(named: Constants.searchBarTintColor)
         navigationItem.searchController = searchController
+        navigationItem.searchController?.searchBar.searchTextField.backgroundColor = UIColor(named: Constants.whiteBackground)
         navigationItem.hidesSearchBarWhenScrolling = true
     }
 
@@ -158,6 +153,21 @@ private extension UsersListView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.centerXAnchor.constraint(equalTo: offlineView.centerXAnchor).isActive = true
         label.centerYAnchor.constraint(equalTo: offlineView.centerYAnchor).isActive = true
+    }
+
+    private func bindViewModel() {
+        viewModel?.reloadData = { [weak self] in
+            self?.tableView.reloadData()
+        }
+        viewModel?.endTableViewRefreshing = { [weak self] in
+            self?.tableView.refreshControl?.endRefreshing()
+        }
+        viewModel?.showLoading = { [weak self] show in
+            self?.showLoading(show)
+        }
+        viewModel?.showOfflineView = { [weak self] show in
+            self?.showOfflineView(show)
+        }
     }
 
     private func showLoading(_ show: Bool) {
@@ -210,7 +220,7 @@ extension UsersListView: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        viewModel?.userCellTap()
+        viewModel?.userCellTap(didSelectRowAt: indexPath)
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {

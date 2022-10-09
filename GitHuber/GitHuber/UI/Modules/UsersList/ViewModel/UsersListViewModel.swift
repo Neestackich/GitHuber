@@ -52,9 +52,12 @@ final class UsersListViewModel: UsersListViewModelType {
     // MARK: Lifecycle
 
     func onViewDidLoad() {
-        loadUsersFromDataBase()
-        startConnectionListener()
         loadUsersFromBackend(from: 0)
+        startConnectionListener()
+    }
+
+    func onViewWillAppear() {
+        loadUsersFromDataBase()
     }
 
 }
@@ -63,8 +66,13 @@ final class UsersListViewModel: UsersListViewModelType {
 
 extension UsersListViewModel {
 
-    func userCellTap() {
-        coordinator.userCellTap()
+    func userCellTap(didSelectRowAt indexPath: IndexPath) {
+        guard indexPath.row + 1 > 0, sortedUsers.count > indexPath.row else {
+            return
+        }
+
+        let userEntity = sortedUsers[indexPath.row]
+        coordinator.userCellTap(userEntity: userEntity, delegate: self, indexPath)
     }
 
     func getUsersCount() -> Int {
@@ -108,13 +116,12 @@ extension UsersListViewModel {
         }
 
         sortedUsers.removeAll()
-        let usersWithSameUserName = users.filter { $0.login?.contains(query) ?? false }
+        let usersWithSameUserName = users.filter { ($0.login?.contains(query) ?? false) || (($0.note?.text?.contains(query)) ?? false) }
         sortedUsers = usersWithSameUserName
 
         DispatchQueue.main.async { [weak self] in
             self?.reloadData?()
         }
-        // gets user's note
     }
 
     func searchBarTextDidEndEditing() {
@@ -187,13 +194,13 @@ private extension UsersListViewModel {
     }
 
     private func hasNotes(cellForRowAt indexPath: IndexPath) -> Bool {
-        guard indexPath.row > 0, users.count > indexPath.row else {
+        guard indexPath.row + 1 > 0, sortedUsers.count > indexPath.row else {
             return false
         }
 
-        let user = users[indexPath.row]
+        let user = sortedUsers[indexPath.row]
 
-        return databaseService.hasNote(user)
+        return user.hasNote
     }
 
 }
@@ -231,6 +238,21 @@ extension UsersListViewModel: APIClientDelegate {
         DispatchQueue.main.async { [weak self] in
             self?.showLoading?(false)
         }
+    }
+
+}
+
+// MARK: - UserProfileViewModelDelegate
+
+extension UsersListViewModel: UserProfileViewModelDelegate {
+
+    func reloadUserCell(at indexPath: IndexPath) {
+        guard indexPath.row + 1 > 0, sortedUsers.count > indexPath.row else {
+            return
+        }
+
+        let user = sortedUsers[indexPath.row]
+        user.hasNote = true
     }
 
 }

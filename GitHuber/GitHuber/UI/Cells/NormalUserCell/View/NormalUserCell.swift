@@ -16,6 +16,12 @@ final class NormalUserCell: BaseCell<NormalUserCellViewModel> {
     @IBOutlet private weak var username: UILabel!
     @IBOutlet private weak var details: UILabel!
 
+    private struct Constants {
+        static let personImage = "person.circle"
+        static let normalBackgroundColor = "WhiteBackground"
+        static let seenBackgroundColor = "SeenUserCellBackground"
+    }
+
     // MARK: Lifecycle
 
     override func awakeFromNib() {
@@ -26,6 +32,7 @@ final class NormalUserCell: BaseCell<NormalUserCellViewModel> {
         avatar.image = nil
         username.text = nil
         details.text = nil
+        cellBackgroundView.backgroundColor = UIColor(named: Constants.normalBackgroundColor)
     }
 
 }
@@ -43,9 +50,13 @@ extension NormalUserCell {
         }
     }
 
-    func bindData(_ data: UserCellData) {
+    func bindData(_ data: UserCellBindableData) {
         username.text = data.username
         details.text = data.url
+
+        if data.isSeen {
+            cellBackgroundView.backgroundColor = UIColor(named: Constants.seenBackgroundColor)
+        }
     }
 
 }
@@ -59,7 +70,11 @@ private extension NormalUserCell {
     }
 
     private func showLoading(_ show: Bool) {
-        
+        if show {
+            avatar.image = UIImage(systemName: Constants.personImage)
+        } else {
+            avatar.image = nil
+        }
     }
 
     private func setupView() {

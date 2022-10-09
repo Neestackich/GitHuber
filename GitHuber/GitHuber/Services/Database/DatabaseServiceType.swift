@@ -8,13 +8,17 @@
 import Foundation
 
 protocol DatabaseServiceType {
+
+    // MARK: - User
     func usersCount() -> Int
     func getUsers(completion: @escaping (Result<[UserEntity], Error>) -> Void)
+    func getUser(_ user: UserEntity, completion: @escaping (Result<UserEntity, Error>) -> Void)
     func saveUser(_ user: User)
-    func saveNewUser(_ user: User)
-    func updateUser(_ updatedUser: User)
 
-    func hasNote(_ user: UserEntity) -> Bool
-    func getNote(for profile: UserProfileEntity) -> NoteEntity?
-    func saveNote(for user: UserEntity)
+    // MARK: - Note
+    func saveNote(for user: UserEntity, text: String?)
+
+    // MARK: - Profile
+    func saveUserProfile(for user: UserEntity, profileData: UserProfile)
+
 }

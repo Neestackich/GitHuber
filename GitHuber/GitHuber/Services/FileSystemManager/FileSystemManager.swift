@@ -17,31 +17,30 @@ extension FileSystemManager {
 
     func fileExists(_ resourceId: String, type: FileType) -> Bool {
         do {
-            let cacheDirectory = try FileManager.default.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-            let fileURL = cacheDirectory.appendingPathComponent(resourceId + type.rawValue)
-
+            let cacheDirectory: URL = try getCacheDirectory()
+            let fileURL: URL = cacheDirectory.appendingPathComponent(resourceId + type.rawValue)
             return FileManager.default.fileExists(atPath: fileURL.path)
         } catch {
             return false
         }
     }
 
-    func getFileFromCache(_ resourceId: String, type: FileType) -> Data? {
+    func getFileFromCache(_ resourceId: String, type: FileType, completion: @escaping (Result<Data, Error>) -> Void) {
         do {
-            let cacheDirectory = try getCacheDirectory()
-            let fileURL = cacheDirectory.appendingPathComponent(resourceId + type.rawValue)
+            let cacheDirectory: URL = try getCacheDirectory()
+            let fileURL: URL = cacheDirectory.appendingPathComponent(resourceId + type.rawValue)
             let data = try Data(contentsOf: fileURL)
 
-            return data
+            completion(.success(data))
         } catch {
-            return nil
+            completion(.failure(error))
         }
     }
 
     func saveFileToCache(_ resourceId: String, type: FileType, data: Data) {
         do {
-            let cacheDirectory = try getCacheDirectory()
-            let fileURL = cacheDirectory.appendingPathComponent(resourceId + type.rawValue)
+            let cacheDirectory: URL = try getCacheDirectory()
+            let fileURL: URL = cacheDirectory.appendingPathComponent(resourceId + type.rawValue)
 
             try data.write(to: fileURL)
         } catch {

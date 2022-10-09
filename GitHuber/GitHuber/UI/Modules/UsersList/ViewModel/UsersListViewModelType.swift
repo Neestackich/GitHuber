@@ -15,8 +15,11 @@ protocol UsersListViewModelType: ViewModelType {
     var showLoading: ((_ show: Bool) -> Void)? { get set }
     var showOfflineView: ((_ show: Bool) -> Void)? { get set }
 
+    // MARK: Lifecycle
+    func onViewWillAppear()
+
     // MARK: DataSources
-    func userCellTap()
+    func userCellTap(didSelectRowAt indexPath: IndexPath)
     func getUsersCount() -> Int
     func getCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UserCellType?
     func paginate()

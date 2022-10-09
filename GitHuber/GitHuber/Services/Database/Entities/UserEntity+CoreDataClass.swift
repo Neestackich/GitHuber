@@ -2,7 +2,7 @@
 //  UserEntity+CoreDataClass.swift
 //  GitHuber
 //
-//  Created by Vittcal Neestackich on 8.10.22.
+//  Created by Vittcal Neestackich on 9.10.22.
 //
 //
 

@@ -8,5 +8,6 @@
 import Foundation
 
 protocol UsersListCoordinatorType: CoordinatorType {
-    func userCellTap()
+    func start()
+    func userCellTap(userEntity: UserEntity, delegate: UserProfileViewModelDelegate, _ indexPath: IndexPath)
 }

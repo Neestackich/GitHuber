@@ -10,6 +10,8 @@ import CoreData
 
 final class DatabaseService: DatabaseServiceType {
 
+    // MARK: Contexts
+
     let readContext = (UIApplication.shared.delegate as? AppDelegate)?.getReadContext()
     let writeContext = (UIApplication.shared.delegate as? AppDelegate)?.getWriteContext()
 
@@ -52,6 +54,28 @@ extension DatabaseService {
         }
     }
 
+    func getUser(_ user: UserEntity, completion: @escaping (Result<UserEntity, Error>) -> Void) {
+        guard let writeContext = writeContext, let login = user.login else {
+            return
+        }
+
+        let fetchRequest = UserEntity.fetchRequest()
+        let idPredicate = NSPredicate(format: "login = %@", login)
+        fetchRequest.predicate = idPredicate
+
+        do {
+            let users = try writeContext.fetch(fetchRequest)
+            guard let persistentUser = users.first else {
+                completion(.failure(DatabaseError.fetchError))
+                return
+            }
+
+            completion(.success(persistentUser))
+        } catch {
+            completion(.failure(error))
+        }
+    }
+
     func saveUser(_ user: User) {
         if userExists(user) {
             updateUser(user)
@@ -60,12 +84,54 @@ extension DatabaseService {
         }
     }
 
-    func saveNewUser(_ user: User) {
+    func saveNote(for user: UserEntity, text: String?) {
+        if let note = user.note {
+            note.text = text
+        } else {
+            saveNewNote(for: user, text: text)
+        }
+    }
+
+    func saveUserProfile(for user: UserEntity, profileData: UserProfile) {
+        if user.profile != nil {
+            updateUserProfile(for: user, profileData: profileData)
+        } else {
+            saveNewUserProfile(for: user, profileData: profileData)
+        }
+    }
+
+}
+
+// MARK: - Private
+
+private extension DatabaseService {
+
+    private func userExists(_ user: User) -> Bool {
+        guard let readContext = readContext else {
+            return false
+        }
+
+        let fetchRequest = UserEntity.fetchRequest()
+        let idPredicate = NSPredicate(format: "id = %@", String(user.id))
+        fetchRequest.predicate = idPredicate
+
+        do {
+            let count = try readContext.count(for: fetchRequest)
+            if count != 0 {
+                return true
+            }
+        } catch {
+            print("Error \(#function): \(error)")
+        }
+
+        return false
+    }
+
+    private func saveNewUser(_ user: User) {
         guard let writeContext = writeContext else {
             return
         }
 
-        print("New user saved: \(user.login) + \(user.id)")
         let userEntity = UserEntity(context: writeContext)
         userEntity.login = user.login
         userEntity.id = Int64(user.id)
@@ -88,12 +154,10 @@ extension DatabaseService {
         userEntity.isSeen = false
     }
 
-    func updateUser(_ updatedUser: User) {
+    private func updateUser(_ updatedUser: User) {
         guard let writeContext = writeContext else {
             return
         }
-
-        print("New user updated: \(updatedUser.login) + \(updatedUser.id)")
 
         let fetchRequest = UserEntity.fetchRequest()
         let idPredicate = NSPredicate(format: "login = %@", updatedUser.login)
@@ -124,62 +188,102 @@ extension DatabaseService {
             persistentUser.type = updatedUser.type.rawValue
             persistentUser.siteAdmin = updatedUser.siteAdmin
         } catch {
+            print("Error \(#function): \(error)")
+        }
+    }
+
+    private func saveNewNote(for user: UserEntity, text: String?) {
+        guard let writeContext = writeContext else {
             return
         }
+
+        let newNote = NoteEntity(context: writeContext)
+        newNote.text = text
+
+        let userObjectId = user.objectID
+        let writeContextUserCopy = writeContext.object(with: userObjectId) as? UserEntity
+
+        writeContextUserCopy?.note = newNote
     }
 
-    func hasNote(_ user: UserEntity) -> Bool {
-        guard let readContext = readContext else {
-            return false
-        }
-
-        let fetchRequest = NoteEntity.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "user = %@", user)
-
-        do {
-            let count = try readContext.count(for: fetchRequest)
-            if count != 0 {
-                return true
-            }
-        } catch let error {
-            print("Error fetching songs: \(error)")
-        }
-        return false
+    private func updateUserProfile(for user: UserEntity, profileData: UserProfile) {
+        user.profile?.login = profileData.login
+        user.profile?.id = Int64(profileData.id)
+        user.profile?.nodeId = profileData.nodeId
+        user.profile?.avatarUrl = profileData.avatarUrl
+        user.profile?.gravatarId = profileData.gravatarId
+        user.profile?.url = profileData.url
+        user.profile?.htmlUrl = profileData.htmlUrl
+        user.profile?.followersUrl = profileData.followersUrl
+        user.profile?.followingUrl = profileData.followingUrl
+        user.profile?.gistsUrl = profileData.gistsUrl
+        user.profile?.starredUrl = profileData.starredUrl
+        user.profile?.subscriptionsUrl = profileData.subscriptionsUrl
+        user.profile?.organizationsUrl = profileData.organizationsUrl
+        user.profile?.reposUrl = profileData.reposUrl
+        user.profile?.eventsUrl = profileData.eventsUrl
+        user.profile?.receivedEventsUrl = profileData.receivedEventsUrl
+        user.profile?.type = profileData.type.rawValue
+        user.profile?.siteAdmin = profileData.siteAdmin
+        user.profile?.name = profileData.name
+        user.profile?.company = profileData.company
+        user.profile?.blog = profileData.blog
+        user.profile?.location = profileData.location
+        user.profile?.email = profileData.email
+        user.profile?.hireable = profileData.hireable
+        user.profile?.bio = profileData.bio
+        user.profile?.twitterUsername = profileData.twitterUsername
+        user.profile?.publicRepos = Int32(profileData.publicRepos)
+        user.profile?.publicGists = Int32(profileData.publicGists)
+        user.profile?.followers = Int32(profileData.followers)
+        user.profile?.following = Int32(profileData.following)
+        user.profile?.createdAt = profileData.createdAt
+        user.profile?.updatedAt = profileData.updatedAt
     }
 
-    func getNote(for profile: UserProfileEntity) -> NoteEntity? {
-        return nil
-    }
-
-    func saveNote(for user: UserEntity) {
-        
-    }
-
-}
-
-// MARK: - Private
-
-private extension DatabaseService {
-
-    private func userExists(_ user: User) -> Bool {
-        guard let readContext = readContext else {
-            return false
+    private func saveNewUserProfile(for user: UserEntity, profileData: UserProfile) {
+        guard let writeContext = writeContext else {
+            return
         }
 
-        let fetchRequest = UserEntity.fetchRequest()
-        let idPredicate = NSPredicate(format: "id = %@", String(user.id))
-        fetchRequest.predicate = idPredicate
+        let newProfile = UserProfileEntity(context: writeContext)
+        newProfile.login = profileData.login
+        newProfile.id = Int64(profileData.id)
+        newProfile.nodeId = profileData.nodeId
+        newProfile.avatarUrl = profileData.avatarUrl
+        newProfile.gravatarId = profileData.gravatarId
+        newProfile.url = profileData.url
+        newProfile.htmlUrl = profileData.htmlUrl
+        newProfile.followersUrl = profileData.followersUrl
+        newProfile.followingUrl = profileData.followingUrl
+        newProfile.gistsUrl = profileData.gistsUrl
+        newProfile.starredUrl = profileData.starredUrl
+        newProfile.subscriptionsUrl = profileData.subscriptionsUrl
+        newProfile.organizationsUrl = profileData.organizationsUrl
+        newProfile.reposUrl = profileData.reposUrl
+        newProfile.eventsUrl = profileData.eventsUrl
+        newProfile.receivedEventsUrl = profileData.receivedEventsUrl
+        newProfile.type = profileData.type.rawValue
+        newProfile.siteAdmin = profileData.siteAdmin
+        newProfile.name = profileData.name
+        newProfile.company = profileData.company
+        newProfile.blog = profileData.blog
+        newProfile.location = profileData.location
+        newProfile.email = profileData.email
+        newProfile.hireable = profileData.hireable
+        newProfile.bio = profileData.bio
+        newProfile.twitterUsername = profileData.twitterUsername
+        newProfile.publicRepos = Int32(profileData.publicRepos)
+        newProfile.publicGists = Int32(profileData.publicGists)
+        newProfile.followers = Int32(profileData.followers)
+        newProfile.following = Int32(profileData.following)
+        newProfile.createdAt = profileData.createdAt
+        newProfile.updatedAt = profileData.updatedAt
 
-        do {
-            let count = try readContext.count(for: fetchRequest)
-            if count != 0 {
-                return true
-            }
-        } catch {
-            print("Error fetching users count: \(error)")
-        }
+        let userObjectId = user.objectID
+        let writeContextUserCopy = writeContext.object(with: userObjectId) as? UserEntity
 
-        return false
+        writeContextUserCopy?.profile = newProfile
     }
 
 }
