@@ -202,7 +202,7 @@ extension UsersListView: UISearchBarDelegate {
 
 }
 
-// MAR: - UITableViewDataSource, UITableViewDelegate
+// MARK: - UITableViewDataSource, UITableViewDelegate
 
 extension UsersListView: UITableViewDataSource, UITableViewDelegate {
 

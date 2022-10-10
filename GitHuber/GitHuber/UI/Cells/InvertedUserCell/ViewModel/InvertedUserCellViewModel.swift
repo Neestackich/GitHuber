@@ -13,7 +13,6 @@ final class InvertedUserCellViewModel: InvertedUserCellViewModelType {
 
     private let userEntity: UserEntity
     private let apiClient: APIClientType
-    private let databaseService: DatabaseServiceType
     private let fileManager: FileSystemManagerType
     private let imageInverter: ImageInversionType
 
@@ -24,12 +23,15 @@ final class InvertedUserCellViewModel: InvertedUserCellViewModelType {
 
     // MARK: Initialization
 
-    init(userEntity: UserEntity, apiClient: APIClientType, databaseService: DatabaseServiceType, fileManager: FileSystemManagerType, imageInverter: ImageInversionType) {
+    init(userEntity: UserEntity, apiClient: APIClientType, fileManager: FileSystemManagerType, imageInverter: ImageInversionType) {
         self.userEntity = userEntity
         self.apiClient = apiClient
-        self.databaseService = databaseService
         self.fileManager = fileManager
         self.imageInverter = imageInverter
+    }
+
+    func onAwakeFromNib() {
+        loadAvatar()
     }
 
 }
@@ -48,8 +50,18 @@ extension InvertedUserCellViewModel {
         let userData = UserCellBindableData(username: userEntity.login ?? "", url: userEntity.htmlUrl ?? "", isSeen: userEntity.isSeen)
         cell.bindData(userData)
 
+        return cell
+    }
+
+}
+
+// MARK: - Private
+
+private extension InvertedUserCellViewModel {
+
+    private func loadAvatar() {
         guard let avatarUrl = userEntity.avatarUrl, let avatarName = avatarUrl.components(separatedBy: "/").last else {
-            return cell
+            return
         }
 
         if fileManager.fileExists(avatarName, type: .png) {
@@ -73,15 +85,7 @@ extension InvertedUserCellViewModel {
             showLoading?(true)
             downloadAvatar(url: avatarUrl)
         }
-
-        return cell
     }
-
-}
-
-// MARK: - Private
-
-private extension InvertedUserCellViewModel {
 
     private func downloadAvatar(url: String) {
         apiClient.sendRequestToQueue(endpoint: .getImage(path: url)) { [weak self] response in
@@ -91,12 +95,11 @@ private extension InvertedUserCellViewModel {
                     return
                 }
 
-               
+                self?.fileManager.saveFileToCache(avatarName, type: .png, data: data)
 
                 let invertedAvatar = self?.imageInverter.invertImage(avatar)
 
                 DispatchQueue.main.async {
-                    self?.fileManager.saveFileToCache(avatarName, type: .png, data: data)
                     self?.showLoading?(false)
                     self?.updateAvatar?(invertedAvatar)
                 }

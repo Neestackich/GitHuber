@@ -37,7 +37,9 @@ extension UsersListCoordinator {
         let apiConfig = APIConfig()
         let networkConnectionListener = NetworkConnectionListener()
         let apiClient = APIClient()
-        let databaseService = DatabaseService()
+        let readContext = (UIApplication.shared.delegate as? AppDelegate)?.getReadContext()
+        let writeContext = (UIApplication.shared.delegate as? AppDelegate)?.getWriteContext()
+        let databaseService = DatabaseService(readContext: readContext, writeContext: writeContext)
         let fileManager = FileSystemManager()
 
         let viewModel = UsersListViewModel(

@@ -48,6 +48,7 @@ extension NormalUserCell {
         viewModel?.updateAvatar = { [weak self] image in
             self?.updateAvatar(image)
         }
+        viewModel?.onAwakeFromNib()
     }
 
     func bindData(_ data: UserCellBindableData) {

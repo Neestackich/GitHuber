@@ -66,6 +66,8 @@ final class UserProfileViewModel: UserProfileViewModelType {
 
 extension UserProfileViewModel {
 
+    // MARK: Lifecycle
+
     func onViewDidLoad() {
         userEntity.isSeen = true
 
@@ -77,7 +79,6 @@ extension UserProfileViewModel {
 
     func saveNoteButtonClick(text: String?) {
         endEditing?()
-        userEntity.hasNote = true
         databaseService.saveNote(for: userEntity, text: text)
         delegate?.reloadUserCell(at: indexPath)
     }

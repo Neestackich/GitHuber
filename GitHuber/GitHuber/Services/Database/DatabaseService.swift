@@ -5,36 +5,26 @@
 //  Created by Vittcal Neestackich on 5.10.22.
 //
 
-import UIKit
+import Foundation
 import CoreData
 
 final class DatabaseService: DatabaseServiceType {
 
     // MARK: Contexts
 
-    let readContext = (UIApplication.shared.delegate as? AppDelegate)?.getReadContext()
-    let writeContext = (UIApplication.shared.delegate as? AppDelegate)?.getWriteContext()
+    private let readContext: NSManagedObjectContext?
+    private let writeContext: NSManagedObjectContext?
+
+    init(readContext: NSManagedObjectContext?, writeContext: NSManagedObjectContext?) {
+        self.readContext = readContext
+        self.writeContext = writeContext
+    }
 
 }
 
 // MARK: - Public
 
 extension DatabaseService {
-
-    func usersCount() -> Int {
-        guard let readContext = readContext else {
-            return 0
-        }
-
-        let fetchRequest = UserEntity.fetchRequest()
-
-        do {
-            let count = try readContext.count(for: fetchRequest)
-            return count
-        } catch {
-            return 0
-        }
-    }
 
     func getUsers(completion: @escaping (Result<[UserEntity], Error>) -> Void) {
         guard let readContext = readContext else {

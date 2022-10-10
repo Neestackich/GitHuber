@@ -8,5 +8,5 @@
 import UIKit
 
 protocol UserCellType where Self: UITableViewCell {
-    
+
 }

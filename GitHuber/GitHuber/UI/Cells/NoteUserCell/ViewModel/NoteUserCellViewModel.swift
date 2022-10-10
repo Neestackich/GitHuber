@@ -13,7 +13,6 @@ final class NoteUserCellViewModel: NoteUserCellViewModelType {
 
     private let userEntity: UserEntity
     private let apiClient: APIClientType
-    private let databaseService: DatabaseServiceType
     private let fileManager: FileSystemManagerType
 
     // MARK: Callbacks
@@ -23,11 +22,14 @@ final class NoteUserCellViewModel: NoteUserCellViewModelType {
 
     // MARK: Initialization
 
-    init(userEntity: UserEntity, apiClient: APIClientType, databaseService: DatabaseServiceType, fileManager: FileSystemManagerType) {
+    init(userEntity: UserEntity, apiClient: APIClientType, fileManager: FileSystemManagerType) {
         self.userEntity = userEntity
         self.apiClient = apiClient
-        self.databaseService = databaseService
         self.fileManager = fileManager
+    }
+
+    func onAwakeFromNib() {
+        loadAvatar()
     }
 
 }
@@ -46,8 +48,18 @@ extension NoteUserCellViewModel {
         let userData = UserCellBindableData(username: userEntity.login ?? "", url: userEntity.htmlUrl ?? "", isSeen: userEntity.isSeen)
         cell.bindData(userData)
 
+        return cell
+    }
+
+}
+
+// MARK: - Private
+
+private extension NoteUserCellViewModel {
+
+    private func loadAvatar() {
         guard let avatarUrl = userEntity.avatarUrl, let avatarName = avatarUrl.components(separatedBy: "/").last else {
-            return cell
+            return
         }
 
         if fileManager.fileExists(avatarName, type: .png) {
@@ -67,15 +79,7 @@ extension NoteUserCellViewModel {
             showLoading?(true)
             downloadAvatar(url: avatarUrl)
         }
-
-        return cell
     }
-
-}
-
-// MARK: - Private
-
-private extension NoteUserCellViewModel {
 
     private func downloadAvatar(url: String) {
         apiClient.sendRequestToQueue(endpoint: .getImage(path: url)) { [weak self] response in

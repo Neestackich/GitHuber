@@ -89,16 +89,16 @@ extension UsersListViewModel {
 
         switch cellType {
         case .normal:
-            let viewModel = NormalUserCellViewModel(userEntity: userEntity, apiClient: apiClient, databaseService: databaseService, fileManager: fileManager)
+            let viewModel = NormalUserCellViewModel(userEntity: userEntity, apiClient: apiClient, fileManager: fileManager)
             let cell = viewModel.getCell(tableView, cellForRowAt: indexPath)
             return cell
         case .note:
-            let viewModel = NoteUserCellViewModel(userEntity: userEntity, apiClient: apiClient, databaseService: databaseService, fileManager: fileManager)
+            let viewModel = NoteUserCellViewModel(userEntity: userEntity, apiClient: apiClient, fileManager: fileManager)
             let cell = viewModel.getCell(tableView, cellForRowAt: indexPath)
             return cell
         case .inverted:
             let imageInverter = ImageInversion()
-            let viewModel = InvertedUserCellViewModel(userEntity: userEntity, apiClient: apiClient, databaseService: databaseService, fileManager: fileManager, imageInverter: imageInverter)
+            let viewModel = InvertedUserCellViewModel(userEntity: userEntity, apiClient: apiClient, fileManager: fileManager, imageInverter: imageInverter)
             let cell = viewModel.getCell(tableView, cellForRowAt: indexPath)
             return cell
         }

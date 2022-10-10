@@ -31,6 +31,7 @@ final class UserProfileView: BaseView<UserProfileViewModel> {
         static let offlineViewBackground = "OfflineViewBackground"
         static let labelsTint = "OfflineLabelTextColor"
         static let offlineViewText = "Offline mode enabled"
+        static let textViewColor = "TextViewColor"
     }
 
     // MARK: Lifecycle
@@ -80,7 +81,7 @@ private extension UserProfileView {
     }
 
     private func setupNoteTextView() {
-        userNoteTextView.textColor = UIColor.lightGray
+        userNoteTextView.textColor = UIColor(named: Constants.textViewColor)
     }
 
     private func setupNoteBackgroundView() {

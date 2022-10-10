@@ -12,7 +12,6 @@ final class NormalUserCellViewModel: NormalUserCellViewModelType {
     // MARK: Properties
     private let userEntity: UserEntity
     private let apiClient: APIClientType
-    private let databaseService: DatabaseServiceType
     private let fileManager: FileSystemManagerType
 
     // MARK: Callbacks
@@ -22,11 +21,14 @@ final class NormalUserCellViewModel: NormalUserCellViewModelType {
 
     // MARK: Initialization
 
-    init(userEntity: UserEntity, apiClient: APIClientType, databaseService: DatabaseServiceType, fileManager: FileSystemManagerType) {
+    init(userEntity: UserEntity, apiClient: APIClientType, fileManager: FileSystemManagerType) {
         self.userEntity = userEntity
         self.apiClient = apiClient
-        self.databaseService = databaseService
         self.fileManager = fileManager
+    }
+
+    func onAwakeFromNib() {
+        loadAvatar()
     }
 
 }
@@ -45,8 +47,18 @@ extension NormalUserCellViewModel {
         let userData = UserCellBindableData(username: userEntity.login ?? "", url: userEntity.htmlUrl ?? "", isSeen: userEntity.isSeen)
         cell.bindData(userData)
 
+        return cell
+    }
+
+}
+
+// MARK: - Private
+
+private extension NormalUserCellViewModel {
+
+    private func loadAvatar() {
         guard let avatarUrl = userEntity.avatarUrl, let avatarName = avatarUrl.components(separatedBy: "/").last else {
-            return cell
+            return
         }
 
         if fileManager.fileExists(avatarName, type: .png) {
@@ -67,14 +79,7 @@ extension NormalUserCellViewModel {
             downloadAvatar(url: avatarUrl)
         }
 
-        return cell
     }
-
-}
-
-// MARK: - Private
-
-private extension NormalUserCellViewModel {
 
     private func downloadAvatar(url: String) {
         apiClient.sendRequestToQueue(endpoint: .getImage(path: url)) { [weak self] response in
