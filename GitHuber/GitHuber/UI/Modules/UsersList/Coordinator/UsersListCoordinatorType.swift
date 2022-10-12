@@ -11,6 +11,6 @@ protocol UsersListCoordinatorType: CoordinatorType {
 
     // MARK: Coordination
     func start()
-    func userCellTap(userEntity: UserEntity, delegate: UserProfileViewModelDelegate, _ indexPath: IndexPath)
+    func userCellTap(userEntity: UserEntity)
 
 }

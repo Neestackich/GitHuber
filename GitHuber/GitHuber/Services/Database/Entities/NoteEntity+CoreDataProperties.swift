@@ -2,7 +2,7 @@
 //  NoteEntity+CoreDataProperties.swift
 //  GitHuber
 //
-//  Created by Vittcal Neestackich on 9.10.22.
+//  Created by Vittcal Neestackich on 12.10.22.
 //
 //
 
@@ -17,7 +17,6 @@ extension NoteEntity {
     }
 
     @NSManaged public var text: String?
-    @NSManaged public var profile: UserProfileEntity?
     @NSManaged public var user: UserEntity?
 
 }

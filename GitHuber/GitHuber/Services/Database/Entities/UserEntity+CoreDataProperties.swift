@@ -2,7 +2,7 @@
 //  UserEntity+CoreDataProperties.swift
 //  GitHuber
 //
-//  Created by Vittcal Neestackich on 9.10.22.
+//  Created by Vittcal Neestackich on 12.10.22.
 //
 //
 
@@ -22,6 +22,7 @@ extension UserEntity {
     @NSManaged public var followingUrl: String?
     @NSManaged public var gistsUrl: String?
     @NSManaged public var gravatarId: String?
+    @NSManaged public var hasNote: Bool
     @NSManaged public var htmlUrl: String?
     @NSManaged public var id: Int64
     @NSManaged public var isSeen: Bool
@@ -35,7 +36,6 @@ extension UserEntity {
     @NSManaged public var subscriptionsUrl: String?
     @NSManaged public var type: String?
     @NSManaged public var url: String?
-    @NSManaged public var hasNote: Bool
     @NSManaged public var note: NoteEntity?
     @NSManaged public var profile: UserProfileEntity?
 

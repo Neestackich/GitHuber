@@ -10,6 +10,6 @@ import Foundation
 protocol UserProfileCoordinatorType: CoordinatorType {
 
     // MARK: Coordination
-    func start(with userEntity: UserEntity, delegate: UserProfileViewModelDelegate, _ indexPath: IndexPath)
+    func start(with userEntity: UserEntity)
 
 }

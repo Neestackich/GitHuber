@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21279" systemVersion="21G115" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="NoteEntity" representedClassName="NoteEntity" syncable="YES">
+    <entity name="NoteEntity" representedClassName=".NoteEntity" syncable="YES">
         <attribute name="text" optional="YES" attributeType="String"/>
-        <relationship name="profile" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserProfileEntity" inverseName="note" inverseEntity="UserProfileEntity"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserEntity" inverseName="note" inverseEntity="UserEntity"/>
     </entity>
-    <entity name="UserEntity" representedClassName="UserEntity" syncable="YES">
+    <entity name="UserEntity" representedClassName=".UserEntity" syncable="YES">
         <attribute name="avatarUrl" optional="YES" attributeType="String"/>
         <attribute name="eventsUrl" optional="YES" attributeType="String"/>
         <attribute name="followersUrl" optional="YES" attributeType="String"/>
@@ -29,7 +28,7 @@
         <relationship name="note" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="NoteEntity" inverseName="user" inverseEntity="NoteEntity"/>
         <relationship name="profile" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="UserProfileEntity" inverseName="user" inverseEntity="UserProfileEntity"/>
     </entity>
-    <entity name="UserProfileEntity" representedClassName="UserProfileEntity" syncable="YES">
+    <entity name="UserProfileEntity" representedClassName=".UserProfileEntity" syncable="YES">
         <attribute name="avatarUrl" optional="YES" attributeType="String"/>
         <attribute name="bio" optional="YES" attributeType="String"/>
         <attribute name="blog" optional="YES" attributeType="String"/>
@@ -62,7 +61,6 @@
         <attribute name="type" optional="YES" attributeType="String"/>
         <attribute name="updatedAt" optional="YES" attributeType="String"/>
         <attribute name="url" optional="YES" attributeType="String"/>
-        <relationship name="note" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="NoteEntity" inverseName="profile" inverseEntity="NoteEntity"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserEntity" inverseName="profile" inverseEntity="UserEntity"/>
     </entity>
 </model>

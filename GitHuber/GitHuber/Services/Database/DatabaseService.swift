@@ -12,12 +12,12 @@ final class DatabaseService: DatabaseServiceType {
 
     // MARK: Contexts
 
-    private let readContext: NSManagedObjectContext?
-    private let writeContext: NSManagedObjectContext?
+    private let coreDataStack: CoreDataStackType
+    private let managedObjectContext: NSManagedObjectContext
 
-    init(readContext: NSManagedObjectContext?, writeContext: NSManagedObjectContext?) {
-        self.readContext = readContext
-        self.writeContext = writeContext
+    init(coreDataStack: CoreDataStackType) {
+        self.coreDataStack = coreDataStack
+        self.managedObjectContext = coreDataStack.getManagedObjectContext()
     }
 
 }
@@ -27,17 +27,12 @@ final class DatabaseService: DatabaseServiceType {
 extension DatabaseService {
 
     func getUsers(completion: @escaping (Result<[UserEntity], Error>) -> Void) {
-        guard let readContext = readContext else {
-            completion(.failure(DatabaseError.contextError))
-            return
-        }
-
         let request = UserEntity.fetchRequest()
         let sortById = NSSortDescriptor(key: "id", ascending: true)
         request.sortDescriptors = [sortById]
 
         do {
-            let users = try readContext.fetch(request)
+            let users = try managedObjectContext.fetch(request)
             completion(.success(users))
         } catch {
             completion(.failure(DatabaseError.fetchError))
@@ -45,7 +40,7 @@ extension DatabaseService {
     }
 
     func getUser(_ user: UserEntity, completion: @escaping (Result<UserEntity, Error>) -> Void) {
-        guard let writeContext = writeContext, let login = user.login else {
+        guard let login = user.login else {
             return
         }
 
@@ -54,7 +49,7 @@ extension DatabaseService {
         fetchRequest.predicate = idPredicate
 
         do {
-            let users = try writeContext.fetch(fetchRequest)
+            let users = try managedObjectContext.fetch(fetchRequest)
             guard let persistentUser = users.first else {
                 completion(.failure(DatabaseError.fetchError))
                 return
@@ -77,6 +72,7 @@ extension DatabaseService {
     func saveNote(for user: UserEntity, text: String?) {
         if let note = user.note {
             note.text = text
+            coreDataStack.saveContextsIfNeeded()
         } else {
             saveNewNote(for: user, text: text)
         }
@@ -97,16 +93,12 @@ extension DatabaseService {
 private extension DatabaseService {
 
     private func userExists(_ user: User) -> Bool {
-        guard let readContext = readContext else {
-            return false
-        }
-
         let fetchRequest = UserEntity.fetchRequest()
-        let idPredicate = NSPredicate(format: "id = %@", String(user.id))
+        let idPredicate = NSPredicate(format: "login = %@", user.login)
         fetchRequest.predicate = idPredicate
 
         do {
-            let count = try readContext.count(for: fetchRequest)
+            let count = try managedObjectContext.count(for: fetchRequest)
             if count != 0 {
                 return true
             }
@@ -118,11 +110,7 @@ private extension DatabaseService {
     }
 
     private func saveNewUser(_ user: User) {
-        guard let writeContext = writeContext else {
-            return
-        }
-
-        let userEntity = UserEntity(context: writeContext)
+        let userEntity = UserEntity(context: managedObjectContext)
         userEntity.login = user.login
         userEntity.id = Int64(user.id)
         userEntity.nodeId = user.nodeId
@@ -141,20 +129,18 @@ private extension DatabaseService {
         userEntity.receivedEventsUrl = user.receivedEventsUrl
         userEntity.type = user.type.rawValue
         userEntity.siteAdmin = user.siteAdmin
-        userEntity.isSeen = false
+
+        coreDataStack.saveContextsIfNeeded()
     }
 
     private func updateUser(_ updatedUser: User) {
-        guard let writeContext = writeContext else {
-            return
-        }
-
         let fetchRequest = UserEntity.fetchRequest()
         let idPredicate = NSPredicate(format: "login = %@", updatedUser.login)
         fetchRequest.predicate = idPredicate
 
         do {
-            let users = try writeContext.fetch(fetchRequest)
+            let users = try managedObjectContext.fetch(fetchRequest)
+
             guard let persistentUser = users.first else {
                 return
             }
@@ -177,23 +163,20 @@ private extension DatabaseService {
             persistentUser.receivedEventsUrl = updatedUser.receivedEventsUrl
             persistentUser.type = updatedUser.type.rawValue
             persistentUser.siteAdmin = updatedUser.siteAdmin
+
+            coreDataStack.saveContextsIfNeeded()
         } catch {
             print("Error \(#function): \(error)")
         }
     }
 
     private func saveNewNote(for user: UserEntity, text: String?) {
-        guard let writeContext = writeContext else {
-            return
-        }
-
-        let newNote = NoteEntity(context: writeContext)
+        let newNote = NoteEntity(context: managedObjectContext)
         newNote.text = text
+        user.note = newNote
+        user.hasNote = true
 
-        let userObjectId = user.objectID
-        let writeContextUserCopy = writeContext.object(with: userObjectId) as? UserEntity
-
-        writeContextUserCopy?.note = newNote
+        coreDataStack.saveContextsIfNeeded()
     }
 
     private func updateUserProfile(for user: UserEntity, profileData: UserProfile) {
@@ -229,14 +212,12 @@ private extension DatabaseService {
         user.profile?.following = Int32(profileData.following)
         user.profile?.createdAt = profileData.createdAt
         user.profile?.updatedAt = profileData.updatedAt
+
+        coreDataStack.saveContextsIfNeeded()
     }
 
     private func saveNewUserProfile(for user: UserEntity, profileData: UserProfile) {
-        guard let writeContext = writeContext else {
-            return
-        }
-
-        let newProfile = UserProfileEntity(context: writeContext)
+        let newProfile = UserProfileEntity(context: managedObjectContext)
         newProfile.login = profileData.login
         newProfile.id = Int64(profileData.id)
         newProfile.nodeId = profileData.nodeId
@@ -270,10 +251,10 @@ private extension DatabaseService {
         newProfile.createdAt = profileData.createdAt
         newProfile.updatedAt = profileData.updatedAt
 
-        let userObjectId = user.objectID
-        let writeContextUserCopy = writeContext.object(with: userObjectId) as? UserEntity
+        user.profile = newProfile
+        user.isSeen = true
 
-        writeContextUserCopy?.profile = newProfile
+        coreDataStack.saveContextsIfNeeded()
     }
 
 }

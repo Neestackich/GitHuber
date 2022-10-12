@@ -72,7 +72,7 @@ extension UsersListViewModel {
         }
 
         let userEntity = sortedUsers[indexPath.row]
-        coordinator.userCellTap(userEntity: userEntity, delegate: self, indexPath)
+        coordinator.userCellTap(userEntity: userEntity)
     }
 
     func getUsersCount() -> Int {
@@ -238,21 +238,6 @@ extension UsersListViewModel: APIClientDelegate {
         DispatchQueue.main.async { [weak self] in
             self?.showLoading?(false)
         }
-    }
-
-}
-
-// MARK: - UserProfileViewModelDelegate
-
-extension UsersListViewModel: UserProfileViewModelDelegate {
-
-    func reloadUserCell(at indexPath: IndexPath) {
-        guard indexPath.row + 1 > 0, sortedUsers.count > indexPath.row else {
-            return
-        }
-
-        let user = sortedUsers[indexPath.row]
-        user.hasNote = true
     }
 
 }

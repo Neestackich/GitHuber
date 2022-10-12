@@ -37,9 +37,10 @@ extension UsersListCoordinator {
         let apiConfig = APIConfig()
         let networkConnectionListener = NetworkConnectionListener()
         let apiClient = APIClient()
-        let readContext = (UIApplication.shared.delegate as? AppDelegate)?.getReadContext()
-        let writeContext = (UIApplication.shared.delegate as? AppDelegate)?.getWriteContext()
-        let databaseService = DatabaseService(readContext: readContext, writeContext: writeContext)
+        guard let coreDataStack = (UIApplication.shared.delegate as? AppDelegate)?.coreDataStack else {
+            return
+        }
+        let databaseService = DatabaseService(coreDataStack: coreDataStack)
         let fileManager = FileSystemManager()
 
         let viewModel = UsersListViewModel(
@@ -59,9 +60,9 @@ extension UsersListCoordinator {
         navigationController?.pushViewController(usersListViewController, animated: true)
     }
 
-    func userCellTap(userEntity: UserEntity, delegate: UserProfileViewModelDelegate, _ indexPath: IndexPath) {
+    func userCellTap(userEntity: UserEntity) {
         let userProfileCoordinator = UserProfileCoordinator(navigationController: navigationController)
-        userProfileCoordinator.start(with: userEntity, delegate: delegate, indexPath)
+        userProfileCoordinator.start(with: userEntity)
     }
 
 }

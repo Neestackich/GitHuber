@@ -12,9 +12,6 @@ final class UserProfileViewModel: UserProfileViewModelType {
     // MARK: Properties
 
     private var userEntity: UserEntity
-    private var indexPath: IndexPath
-
-    weak var delegate: UserProfileViewModelDelegate?
 
     private let coordinator: UserProfileCoordinatorType
     private let decoder: JSONDecoder
@@ -41,7 +38,6 @@ final class UserProfileViewModel: UserProfileViewModelType {
     // MARK: Initialization
 
     init(userEntity: UserEntity,
-         indexPath: IndexPath,
          coordinator: UserProfileCoordinatorType,
          decoder: JSONDecoder,
          apiClient: APIClientType,
@@ -50,7 +46,6 @@ final class UserProfileViewModel: UserProfileViewModelType {
          fileManager: FileSystemManagerType,
          networkConnectionListener: NetworkConnectionListenerType) {
         self.userEntity = userEntity
-        self.indexPath = indexPath
         self.coordinator = coordinator
         self.decoder = decoder
         self.apiClient = apiClient
@@ -69,8 +64,6 @@ extension UserProfileViewModel {
     // MARK: Lifecycle
 
     func onViewDidLoad() {
-        userEntity.isSeen = true
-
         loadUserAvatar()
         bindUserProfileData()
         loadUserProfileFromBackend()
@@ -80,7 +73,6 @@ extension UserProfileViewModel {
     func saveNoteButtonClick(text: String?) {
         endEditing?()
         databaseService.saveNote(for: userEntity, text: text)
-        delegate?.reloadUserCell(at: indexPath)
     }
 
     func textViewDidBeginEditing() {

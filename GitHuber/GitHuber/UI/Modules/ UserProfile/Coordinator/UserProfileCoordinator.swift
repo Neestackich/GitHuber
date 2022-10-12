@@ -32,18 +32,18 @@ extension UserProfileCoordinator {
 
     // MARK: Coordination
 
-    func start(with userEntity: UserEntity, delegate: UserProfileViewModelDelegate, _ indexPath: IndexPath) {
+    func start(with userEntity: UserEntity) {
         let decoder = JSONDecoder()
         let apiConfig = APIConfig()
         let networkConnectionListener = NetworkConnectionListener()
         let apiClient = APIClient()
-        let readContext = (UIApplication.shared.delegate as? AppDelegate)?.getReadContext()
-        let writeContext = (UIApplication.shared.delegate as? AppDelegate)?.getWriteContext()
-        let databaseService = DatabaseService(readContext: readContext, writeContext: writeContext)
+        guard let coreDataStack = (UIApplication.shared.delegate as? AppDelegate)?.coreDataStack else {
+            return
+        }
+        let databaseService = DatabaseService(coreDataStack: coreDataStack)
         let fileManager = FileSystemManager()
         let viewModel = UserProfileViewModel(
             userEntity: userEntity,
-            indexPath: indexPath,
             coordinator: self,
             decoder: decoder,
             apiClient: apiClient,
@@ -53,7 +53,6 @@ extension UserProfileCoordinator {
             networkConnectionListener: networkConnectionListener)
         networkConnectionListener.delegate = viewModel
         apiClient.delegate = viewModel
-        viewModel.delegate = delegate
 
         let storyboard = UIStoryboard(name: Constants.storyboardName, bundle: nil)
 

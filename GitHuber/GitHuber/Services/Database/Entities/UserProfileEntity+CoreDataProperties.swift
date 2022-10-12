@@ -2,7 +2,7 @@
 //  UserProfileEntity+CoreDataProperties.swift
 //  GitHuber
 //
-//  Created by Vittcal Neestackich on 9.10.22.
+//  Created by Vittcal Neestackich on 12.10.22.
 //
 //
 
@@ -48,7 +48,6 @@ extension UserProfileEntity {
     @NSManaged public var type: String?
     @NSManaged public var updatedAt: String?
     @NSManaged public var url: String?
-    @NSManaged public var note: NoteEntity?
     @NSManaged public var user: UserEntity?
 
 }
