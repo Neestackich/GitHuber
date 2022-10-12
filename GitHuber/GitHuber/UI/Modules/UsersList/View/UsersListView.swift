@@ -110,6 +110,7 @@ private extension UsersListView {
         navigationItem.searchController = searchController
         navigationItem.searchController?.searchBar.searchTextField.backgroundColor = UIColor(named: Constants.whiteBackground)
         navigationItem.hidesSearchBarWhenScrolling = true
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
 
     private func setupView() {

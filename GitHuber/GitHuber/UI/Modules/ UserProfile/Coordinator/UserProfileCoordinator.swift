@@ -30,8 +30,6 @@ final class UserProfileCoordinator: UserProfileCoordinatorType {
 
 extension UserProfileCoordinator {
 
-    // MARK: Coordination
-
     func start(with userEntity: UserEntity) {
         let decoder = JSONDecoder()
         let apiConfig = APIConfig()

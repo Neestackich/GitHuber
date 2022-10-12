@@ -33,6 +33,7 @@ final class UserProfileViewModel: UserProfileViewModelType {
     var bindData: ((UserProfileViewBindableData) -> Void)?
     var updateTitle: ((String?) -> Void)?
     var updateNote: ((String?) -> Void)?
+    var enableButton: ((Bool) -> Void)?
     var endEditing: (() -> Void)?
 
     // MARK: Initialization
@@ -71,11 +72,18 @@ extension UserProfileViewModel {
     }
 
     func saveNoteButtonClick(text: String?) {
+        guard let text = text?.trimmingCharacters(in: .whitespacesAndNewlines), !text.isEmpty else {
+            return
+        }
+
         endEditing?()
+        enableButton?(false)
         databaseService.saveNote(for: userEntity, text: text)
     }
 
     func textViewDidBeginEditing() {
+        enableButton?(true)
+
         if userEntity.note?.text == nil {
             updateNote?("")
         }
@@ -97,7 +105,7 @@ private extension UserProfileViewModel {
             company: userEntity.profile?.company ?? "No",
             blog: userEntity.profile?.blog ?? "No",
             followers: String(userEntity.profile?.followers ?? 0),
-            following: String(userEntity.profile?.following ?? 0), note: userEntity.note?.text ?? Constants.userNoteTextView)
+            following: String(userEntity.profile?.following ?? 0), note: userEntity.note?.text ?? Constants.userNoteTextView, enableButton: false)
 
         DispatchQueue.main.async { [weak self] in
             self?.updateTitle?(self?.userEntity.profile?.login)
@@ -127,8 +135,10 @@ private extension UserProfileViewModel {
             case .success(let data):
                 if let userProfile = try? self?.decoder.decode(UserProfile.self, from: data),
                    let user = self?.userEntity {
-                    self?.databaseService.saveUserProfile(for: user, profileData: userProfile)
-                    self?.loadUserFromDataBase()
+                    DispatchQueue.main.async {
+                        self?.databaseService.saveUserProfile(for: user, profileData: userProfile)
+                        self?.loadUserFromDataBase()
+                    }
                 } else if let errorData = try? self?.decoder.decode(ErrorResponse.self, from: data) {
                     print(errorData)
                 }

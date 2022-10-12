@@ -10,11 +10,12 @@ import UIKit
 protocol UserProfileViewModelType: ViewModelType {
 
     // MARK: Callbacks
-    var showLoading: ((_ show: Bool) -> Void)? { get set }
-    var showOfflineView: ((_ show: Bool) -> Void)? { get set }
+    var showLoading: ((Bool) -> Void)? { get set }
+    var showOfflineView: ((Bool) -> Void)? { get set }
     var updateAvatar: ((UIImage?) -> Void)? { get set }
     var updateTitle: ((String?) -> Void)? { get set }
     var updateNote: ((String?) -> Void)? { get set }
+    var enableButton: ((Bool) -> Void)? { get set }
     var endEditing: (() -> Void)? { get set }
 
     // MARK: DataSource

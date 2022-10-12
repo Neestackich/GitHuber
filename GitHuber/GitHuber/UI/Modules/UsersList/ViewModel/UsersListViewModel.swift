@@ -52,12 +52,13 @@ final class UsersListViewModel: UsersListViewModelType {
     // MARK: Lifecycle
 
     func onViewDidLoad() {
+        loadUsersFromDataBase()
         loadUsersFromBackend(from: 0)
         startConnectionListener()
     }
 
     func onViewWillAppear() {
-        loadUsersFromDataBase()
+        reloadData?()
     }
 
 }
@@ -169,11 +170,13 @@ private extension UsersListViewModel {
             switch response {
             case .success(let data):
                 if let users = try? self?.decoder.decode([User].self, from: data) {
-                    for user in users {
-                        self?.databaseService.saveUser(user)
-                    }
+                    DispatchQueue.main.async {
+                        for user in users {
+                            self?.databaseService.saveUser(user)
+                        }
 
-                    self?.loadUsersFromDataBase()
+                        self?.loadUsersFromDataBase()
+                    }
                 } else if let errorData = try? self?.decoder.decode(ErrorResponse.self, from: data) {
                     print(errorData)
                 }

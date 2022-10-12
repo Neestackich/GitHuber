@@ -14,4 +14,5 @@ struct UserProfileViewBindableData {
     let followers: String
     let following: String
     let note: String
+    let enableButton: Bool
 }

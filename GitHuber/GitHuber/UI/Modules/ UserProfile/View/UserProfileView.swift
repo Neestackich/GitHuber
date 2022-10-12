@@ -127,6 +127,7 @@ private extension UserProfileView {
         followersLabel.text = "Followers: \(data.followers)"
         followingLabel.text = "Following: \(data.following)"
         userNoteTextView.text = data.note
+        addNoteButton.isEnabled = data.enableButton
     }
 
     private func bindViewModel() {
@@ -148,6 +149,9 @@ private extension UserProfileView {
         viewModel?.updateNote = { [weak self] text in
             self?.updateNote(text)
         }
+        viewModel?.enableButton = { [weak self] enable in
+            self?.enableButton(enable)
+        }
         viewModel?.endEditing = { [weak self] in
             self?.view.endEditing(true)
         }
@@ -167,6 +171,10 @@ private extension UserProfileView {
 
     private func updateNote(_ text: String?) {
         userNoteTextView.text = text
+    }
+
+    private func enableButton(_ enable: Bool) {
+        addNoteButton.isEnabled = enable
     }
 
     private func showLoading(_ show: Bool) {

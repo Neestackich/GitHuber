@@ -34,7 +34,6 @@ final class CoreDataStack: CoreDataStackType {
     private lazy var managedObjectContext: NSManagedObjectContext = {
         let managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         managedObjectContext.parent = writeManagedObjectContext
-        // managedObjectContext.automaticallyMergesChangesFromParent = true
 
         return managedObjectContext
     }()

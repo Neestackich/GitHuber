@@ -12,8 +12,8 @@ protocol UsersListViewModelType: ViewModelType {
     // MARK: Callbacks
     var reloadData: (() -> Void)? { get set }
     var endTableViewRefreshing: (() -> Void)? { get set }
-    var showLoading: ((_ show: Bool) -> Void)? { get set }
-    var showOfflineView: ((_ show: Bool) -> Void)? { get set }
+    var showLoading: ((Bool) -> Void)? { get set }
+    var showOfflineView: ((Bool) -> Void)? { get set }
 
     // MARK: Lifecycle
     func onViewWillAppear()
