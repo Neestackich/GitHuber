@@ -27,62 +27,76 @@ final class DatabaseService: DatabaseServiceType {
 extension DatabaseService {
 
     func getUsers(completion: @escaping (Result<[UserEntity], Error>) -> Void) {
-        let request = UserEntity.fetchRequest()
-        let sortById = NSSortDescriptor(key: "id", ascending: true)
-        request.sortDescriptors = [sortById]
+        managedObjectContext.perform { [weak self] in
+            guard let managedObjectContext = self?.managedObjectContext else {
+                return
+            }
 
-        do {
-            let users = try managedObjectContext.fetch(request)
-            completion(.success(users))
-        } catch {
-            completion(.failure(DatabaseError.fetchError))
+            let request = UserEntity.fetchRequest()
+            let sortById = NSSortDescriptor(key: "id", ascending: true)
+            request.sortDescriptors = [sortById]
+
+            do {
+                let users = try managedObjectContext.fetch(request)
+                completion(.success(users))
+            } catch {
+                completion(.failure(DatabaseError.fetchError))
+            }
         }
     }
 
     func getUser(_ user: UserEntity, completion: @escaping (Result<UserEntity, Error>) -> Void) {
-        guard let login = user.login else {
-            return
-        }
-
-        let fetchRequest = UserEntity.fetchRequest()
-        let idPredicate = NSPredicate(format: "login = %@", login)
-        fetchRequest.predicate = idPredicate
-
-        do {
-            let users = try managedObjectContext.fetch(fetchRequest)
-            guard let persistentUser = users.first else {
-                completion(.failure(DatabaseError.fetchError))
+        managedObjectContext.perform { [weak self] in
+            guard let managedObjectContext = self?.managedObjectContext, let login = user.login else {
                 return
             }
 
-            completion(.success(persistentUser))
-        } catch {
-            completion(.failure(error))
+            let fetchRequest = UserEntity.fetchRequest()
+            let idPredicate = NSPredicate(format: "login = %@", login)
+            fetchRequest.predicate = idPredicate
+
+            do {
+                let users = try managedObjectContext.fetch(fetchRequest)
+                guard let persistentUser = users.first else {
+                    completion(.failure(DatabaseError.fetchError))
+                    return
+                }
+
+                completion(.success(persistentUser))
+            } catch {
+                completion(.failure(error))
+            }
         }
     }
 
     func saveUser(_ user: User) {
-        if userExists(user) {
-            updateUser(user)
-        } else {
-            saveNewUser(user)
+        managedObjectContext.perform { [weak self] in
+            if let exists = self?.userExists(user), exists {
+                self?.updateUser(user)
+            } else {
+                self?.saveNewUser(user)
+            }
         }
     }
 
     func saveNote(for user: UserEntity, text: String?) {
-        if let note = user.note {
-            note.text = text
-            coreDataStack.saveContextsIfNeeded()
-        } else {
-            saveNewNote(for: user, text: text)
+        managedObjectContext.perform { [weak self] in
+            if let note = user.note {
+                note.text = text
+                self?.coreDataStack.saveContextsIfNeeded()
+            } else {
+                self?.saveNewNote(for: user, text: text)
+            }
         }
     }
 
     func saveUserProfile(for user: UserEntity, profileData: UserProfile) {
-        if user.profile != nil {
-            updateUserProfile(for: user, profileData: profileData)
-        } else {
-            saveNewUserProfile(for: user, profileData: profileData)
+        managedObjectContext.perform { [weak self] in
+            if user.profile != nil {
+                self?.updateUserProfile(for: user, profileData: profileData)
+            } else {
+                self?.saveNewUserProfile(for: user, profileData: profileData)
+            }
         }
     }
 

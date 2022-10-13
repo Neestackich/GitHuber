@@ -135,10 +135,8 @@ private extension UserProfileViewModel {
             case .success(let data):
                 if let userProfile = try? self?.decoder.decode(UserProfile.self, from: data),
                    let user = self?.userEntity {
-                    DispatchQueue.main.async {
-                        self?.databaseService.saveUserProfile(for: user, profileData: userProfile)
-                        self?.loadUserFromDataBase()
-                    }
+                    self?.databaseService.saveUserProfile(for: user, profileData: userProfile)
+                    self?.loadUserFromDataBase()
                 } else if let errorData = try? self?.decoder.decode(ErrorResponse.self, from: data) {
                     print(errorData)
                 }

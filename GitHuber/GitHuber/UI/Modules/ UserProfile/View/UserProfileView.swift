@@ -178,6 +178,7 @@ private extension UserProfileView {
     }
 
     private func showLoading(_ show: Bool) {
+        userNoteTextView.isEditable = !show
         if show {
             activityIndicatorView.startAnimating()
         } else {
