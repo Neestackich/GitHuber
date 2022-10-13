@@ -170,10 +170,7 @@ private extension UsersListViewModel {
             switch response {
             case .success(let data):
                 if let users = try? self?.decoder.decode([User].self, from: data) {
-                    for user in users {
-                        self?.databaseService.saveUser(user)
-                    }
-
+                    self?.databaseService.saveUsers(users)
                     self?.loadUsersFromDataBase()
                 } else if let errorData = try? self?.decoder.decode(ErrorResponse.self, from: data) {
                     print(errorData)

@@ -69,13 +69,17 @@ extension DatabaseService {
         }
     }
 
-    func saveUser(_ user: User) {
+    func saveUsers(_ users: [User]) {
         managedObjectContext.perform { [weak self] in
-            if let exists = self?.userExists(user), exists {
-                self?.updateUser(user)
-            } else {
-                self?.saveNewUser(user)
+            for user in users {
+                if let exists = self?.userExists(user), exists {
+                    self?.updateUser(user)
+                } else {
+                    self?.saveNewUser(user)
+                }
             }
+
+            self?.coreDataStack.saveContextsIfNeeded()
         }
     }
 
@@ -143,8 +147,6 @@ private extension DatabaseService {
         userEntity.receivedEventsUrl = user.receivedEventsUrl
         userEntity.type = user.type.rawValue
         userEntity.siteAdmin = user.siteAdmin
-
-        coreDataStack.saveContextsIfNeeded()
     }
 
     private func updateUser(_ updatedUser: User) {
@@ -177,8 +179,6 @@ private extension DatabaseService {
             persistentUser.receivedEventsUrl = updatedUser.receivedEventsUrl
             persistentUser.type = updatedUser.type.rawValue
             persistentUser.siteAdmin = updatedUser.siteAdmin
-
-            coreDataStack.saveContextsIfNeeded()
         } catch {
             print("Error \(#function): \(error)")
         }
