@@ -70,7 +70,7 @@ extension DatabaseService {
     }
 
     func saveUsers(_ users: [User]) {
-        managedObjectContext.perform { [weak self] in
+        managedObjectContext.performAndWait { [weak self] in
             for user in users {
                 if let exists = self?.userExists(user), exists {
                     self?.updateUser(user)
@@ -84,23 +84,26 @@ extension DatabaseService {
     }
 
     func saveNote(for user: UserEntity, text: String?) {
-        managedObjectContext.perform { [weak self] in
+        managedObjectContext.performAndWait { [weak self] in
             if let note = user.note {
                 note.text = text
-                self?.coreDataStack.saveContextsIfNeeded()
             } else {
                 self?.saveNewNote(for: user, text: text)
             }
+
+            self?.coreDataStack.saveContextsIfNeeded()
         }
     }
 
     func saveUserProfile(for user: UserEntity, profileData: UserProfile) {
-        managedObjectContext.perform { [weak self] in
+        managedObjectContext.performAndWait { [weak self] in
             if user.profile != nil {
                 self?.updateUserProfile(for: user, profileData: profileData)
             } else {
                 self?.saveNewUserProfile(for: user, profileData: profileData)
             }
+
+            self?.coreDataStack.saveContextsIfNeeded()
         }
     }
 
@@ -189,8 +192,6 @@ private extension DatabaseService {
         newNote.text = text
         user.note = newNote
         user.hasNote = true
-
-        coreDataStack.saveContextsIfNeeded()
     }
 
     private func updateUserProfile(for user: UserEntity, profileData: UserProfile) {
@@ -226,8 +227,6 @@ private extension DatabaseService {
         user.profile?.following = Int32(profileData.following)
         user.profile?.createdAt = profileData.createdAt
         user.profile?.updatedAt = profileData.updatedAt
-
-        coreDataStack.saveContextsIfNeeded()
     }
 
     private func saveNewUserProfile(for user: UserEntity, profileData: UserProfile) {
@@ -267,8 +266,6 @@ private extension DatabaseService {
 
         user.profile = newProfile
         user.isSeen = true
-
-        coreDataStack.saveContextsIfNeeded()
     }
 
 }
