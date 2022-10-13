@@ -56,10 +56,6 @@ extension CoreDataStack {
         return managedObjectContext
     }
 
-    func getPrivateQueueManagedObjectContext() -> NSManagedObjectContext {
-        return writeManagedObjectContext
-    }
-
     func saveContextsIfNeeded() {
         guard managedObjectContext.hasPersistanceChanges || writeManagedObjectContext.hasPersistanceChanges else {
             return

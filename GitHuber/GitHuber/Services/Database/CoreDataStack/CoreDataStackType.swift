@@ -12,7 +12,6 @@ protocol CoreDataStackType {
 
     // MARK: Contexts Management
     func getManagedObjectContext() -> NSManagedObjectContext
-    func getPrivateQueueManagedObjectContext() -> NSManagedObjectContext
     func saveContextsIfNeeded()
 
 }

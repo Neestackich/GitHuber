@@ -41,7 +41,8 @@ final class MockDatabaseService: DatabaseServiceType {
         getUsersCalled = true
 
         if !usersEmpty {
-            userEntity = UserEntity(context: testContext)
+            let entityDescription = NSEntityDescription.entity(forEntityName: "UserEntity", in: testContext)
+            userEntity = UserEntity(entity: entityDescription!, insertInto: testContext)
             completion(.success([userEntity]))
         } else {
             completion(.failure(DatabaseError.fetchError))
@@ -52,8 +53,10 @@ final class MockDatabaseService: DatabaseServiceType {
         getUserCalled = true
 
         if !usersEmpty {
-            userEntity = UserEntity(context: testContext)
-            profileEntity = UserProfileEntity(context: testContext)
+            let userEntityDescription = NSEntityDescription.entity(forEntityName: "UserEntity", in: testContext)
+            userEntity = UserEntity(entity: userEntityDescription!, insertInto: testContext)
+            let userProfileDescription = NSEntityDescription.entity(forEntityName: "UserProfileEntity", in: testContext)
+            profileEntity = UserProfileEntity(entity: userProfileDescription!, insertInto: testContext)
             userEntity.profile = profileEntity
             completion(.success(userEntity))
         } else {

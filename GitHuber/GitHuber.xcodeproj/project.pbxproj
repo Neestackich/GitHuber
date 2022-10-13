@@ -11,7 +11,6 @@
 		3A2BE14D28ED5DE3008AC355 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE14C28ED5DE3008AC355 /* SceneDelegate.swift */; };
 		3A2BE15528ED5DE4008AC355 /* GitHuber.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE15328ED5DE4008AC355 /* GitHuber.xcdatamodeld */; };
 		3A2BE15A28ED5DE7008AC355 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A2BE15828ED5DE7008AC355 /* LaunchScreen.storyboard */; };
-		3A2BE16528ED5DE8008AC355 /* GitHuberTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE16428ED5DE8008AC355 /* GitHuberTests.swift */; };
 		3A2BE16F28ED5DE8008AC355 /* GitHuberUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE16E28ED5DE8008AC355 /* GitHuberUITests.swift */; };
 		3A2BE17128ED5DE8008AC355 /* GitHuberUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE17028ED5DE8008AC355 /* GitHuberUITestsLaunchTests.swift */; };
 		3A2BE19128ED65D8008AC355 /* UsersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2BE19028ED65D8008AC355 /* UsersListView.swift */; };
@@ -124,7 +123,6 @@
 		3A2BE15928ED5DE7008AC355 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3A2BE15B28ED5DE7008AC355 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3A2BE16028ED5DE8008AC355 /* GitHuberTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GitHuberTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		3A2BE16428ED5DE8008AC355 /* GitHuberTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHuberTests.swift; sourceTree = "<group>"; };
 		3A2BE16A28ED5DE8008AC355 /* GitHuberUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GitHuberUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A2BE16E28ED5DE8008AC355 /* GitHuberUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHuberUITests.swift; sourceTree = "<group>"; };
 		3A2BE17028ED5DE8008AC355 /* GitHuberUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHuberUITestsLaunchTests.swift; sourceTree = "<group>"; };
@@ -283,7 +281,6 @@
 				3A3C852C28F3535700B6A41D /* InvertedUserCellViewModelTests */,
 				3A3C852B28F3534800B6A41D /* NoteUserCellViewModelTests */,
 				3A3C852A28F3533200B6A41D /* NormalUserCellViewModelTests */,
-				3A2BE16428ED5DE8008AC355 /* GitHuberTests.swift */,
 			);
 			path = GitHuberTests;
 			sourceTree = "<group>";
@@ -1018,7 +1015,6 @@
 				3A3C853828F35EB200B6A41D /* InvertedUserCellViewModelTests.swift in Sources */,
 				3A3C854028F3745900B6A41D /* MockUserProfileCoordinator.swift in Sources */,
 				3A3C852728F352D200B6A41D /* MockFileSystemManager.swift in Sources */,
-				3A2BE16528ED5DE8008AC355 /* GitHuberTests.swift in Sources */,
 				3A3C852328F3525500B6A41D /* MockAPIClient.swift in Sources */,
 				3A3C853A28F3654E00B6A41D /* MockNetworkConnectionListener.swift in Sources */,
 				3A3C852E28F355E500B6A41D /* TestCoreDataStack.swift in Sources */,

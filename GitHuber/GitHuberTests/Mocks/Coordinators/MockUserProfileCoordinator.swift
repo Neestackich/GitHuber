@@ -13,15 +13,11 @@ final class MockUserProfileCoordinator: UserProfileCoordinatorType {
     var navigationController: UINavigationController?
 
     var userEntity: UserEntity?
-    var delegate: UserProfileViewModelDelegate?
-    var indexPath: IndexPath?
     var startCalled = false
 
-    func start(with userEntity: UserEntity, delegate: UserProfileViewModelDelegate, _ indexPath: IndexPath) {
+    func start(with userEntity: UserEntity) {
         startCalled = true
         self.userEntity = userEntity
-        self.delegate = delegate
-        self.indexPath = indexPath
     }
 
     init(navigationController: UINavigationController?) {

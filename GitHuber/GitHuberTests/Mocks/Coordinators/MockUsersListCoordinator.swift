@@ -13,19 +13,15 @@ final class MockUsersListCoordinator: UsersListCoordinatorType {
     var navigationController: UINavigationController?
 
     var userEntity: UserEntity?
-    var delegate: UserProfileViewModelDelegate?
-    var indexPath: IndexPath?
     var userCellTapCalled = false
 
     func start() {
         
     }
 
-    func userCellTap(userEntity: UserEntity, delegate: UserProfileViewModelDelegate, _ indexPath: IndexPath) {
+    func userCellTap(userEntity: UserEntity) {
         userCellTapCalled = true
         self.userEntity = userEntity
-        self.delegate = delegate
-        self.indexPath = indexPath
     }
 
     init(navigationController: UINavigationController?) {

@@ -33,15 +33,15 @@ final class UserProfileViewModelTests: XCTestCase {
         mockAPIClient = MockAPIClient()
         mockFileManager = MockFileSystemManager()
         coreDataStack = TestCoreDataStack()
-        testContext = coreDataStack.persistentContainer.newBackgroundContext()
+        testContext = coreDataStack.getManagedObjectContext()
         mockDatabaseService = MockDatabaseService(testContext: testContext)
         mockConnectionListener = MockNetworkConnectionListener()
-        userEntity = UserEntity(context: testContext)
+        let entityDescription = NSEntityDescription.entity(forEntityName: "UserEntity", in: testContext)
+        userEntity = UserEntity(entity: entityDescription!, insertInto: testContext)
         userEntity.avatarUrl = "http/test/avatar"
         userEntity.login = "test"
-        let indexPath = IndexPath(row: 0, section: 0)
 
-        sut = UserProfileViewModel(userEntity: userEntity, indexPath: indexPath, coordinator: mockCoordinator, decoder: decoder, apiClient: mockAPIClient, apiConfig: apiConfig, databaseService: mockDatabaseService, fileManager: mockFileManager, networkConnectionListener: mockConnectionListener)
+        sut = UserProfileViewModel(userEntity: userEntity, coordinator: mockCoordinator, decoder: decoder, apiClient: mockAPIClient, apiConfig: apiConfig, databaseService: mockDatabaseService, fileManager: mockFileManager, networkConnectionListener: mockConnectionListener)
     }
 
     override func tearDown() {

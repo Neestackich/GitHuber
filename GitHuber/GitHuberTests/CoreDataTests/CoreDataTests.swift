@@ -37,8 +37,8 @@ final class CoreDataTests: XCTestCase {
     override func setUp() {
         super.setUp()
         testCoreDataStack = TestCoreDataStack()
-        let testContext = testCoreDataStack.persistentContainer.newBackgroundContext()
-        databaseService = DatabaseService(readContext: testContext, writeContext: testContext)
+        let testContext = testCoreDataStack.getManagedObjectContext()
+        databaseService = DatabaseService(coreDataStack: testCoreDataStack)
         tsetUsers = [testUser1, testUser2]
     }
 

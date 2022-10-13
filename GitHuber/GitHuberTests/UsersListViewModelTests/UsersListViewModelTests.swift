@@ -31,7 +31,7 @@ final class UsersListViewModelTests: XCTestCase {
         mockAPIClient = MockAPIClient()
         mockFileManager = MockFileSystemManager()
         coreDataStack = TestCoreDataStack()
-        testContext = coreDataStack.persistentContainer.newBackgroundContext()
+        testContext = coreDataStack.getManagedObjectContext()
         mockDatabaseService = MockDatabaseService(testContext: testContext)
         mockConnectionListener = MockNetworkConnectionListener()
 
@@ -85,14 +85,14 @@ extension UsersListViewModelTests {
         XCTAssertTrue(mockAPIClient.sendRequestToQueueCalled)
     }
 
-    func test_OnViewWillAppear_ShouldLoad_UsersFromDatabase() {
+    func test_OnViewDidLoad_ShouldLoad_UsersFromDatabase() {
         XCTAssertFalse(mockDatabaseService.getUsersCalled)
-        sut.onViewWillAppear()
+        sut.onViewDidLoad()
         XCTAssertTrue(mockDatabaseService.getUsersCalled)
     }
 
     func test_OnCellTap_ShouldCall_Coordinator() {
-        sut.onViewWillAppear()
+        sut.onViewDidLoad()
         let indexPath = IndexPath(row: 0, section: 0)
         XCTAssertFalse(mockCoordinator.userCellTapCalled)
         sut.userCellTap(didSelectRowAt: indexPath)
@@ -101,7 +101,7 @@ extension UsersListViewModelTests {
 
     func test_OnCellTap_ShouldNotCall_Coordinator_IfUsersAreEmpty() {
         mockDatabaseService.usersEmpty = true
-        sut.onViewWillAppear()
+        sut.onViewDidLoad()
 
         let indexPath = IndexPath(row: 0, section: 0)
         XCTAssertFalse(mockCoordinator.userCellTapCalled)
@@ -110,8 +110,8 @@ extension UsersListViewModelTests {
     }
 
     func test_OnPagination_ShouldLoad_UsersFromBackend() {
-        sut.onViewWillAppear()
         XCTAssertFalse(mockAPIClient.sendRequestToQueueCalled)
+        sut.onViewDidLoad()
         sut.paginate()
         XCTAssertTrue(mockAPIClient.sendRequestToQueueCalled)
     }

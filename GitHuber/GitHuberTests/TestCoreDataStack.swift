@@ -9,7 +9,7 @@ import XCTest
 @testable import GitHuber
 import CoreData
 
-final class TestCoreDataStack: NSObject {
+final class TestCoreDataStack: NSObject, CoreDataStackType {
 
     lazy var persistentContainer: NSPersistentContainer = {
         let description = NSPersistentStoreDescription()
@@ -25,5 +25,17 @@ final class TestCoreDataStack: NSObject {
 
         return container
     }()
+
+}
+
+extension TestCoreDataStack {
+
+    func getManagedObjectContext() -> NSManagedObjectContext {
+        return persistentContainer.newBackgroundContext()
+    }
+
+    func saveContextsIfNeeded() {
+        // persistentContainer.viewContext.save()
+    }
 
 }
