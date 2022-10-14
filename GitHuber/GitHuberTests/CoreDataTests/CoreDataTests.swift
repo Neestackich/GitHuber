@@ -36,8 +36,7 @@ final class CoreDataTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        testCoreDataStack = TestCoreDataStack()
-        let testContext = testCoreDataStack.getManagedObjectContext()
+        testCoreDataStack = TestCoreDataStack(modelName: "GitHuber")
         databaseService = DatabaseService(coreDataStack: testCoreDataStack)
         tsetUsers = [testUser1, testUser2]
     }
@@ -56,7 +55,7 @@ final class CoreDataTests: XCTestCase {
 extension CoreDataTests {
 
     func test_WhenSaveUser_Called_ShouldSave() {
-        databaseService.saveUser(testUser1)
+        databaseService.saveUsers([testUser1])
         databaseService.getUsers { [weak self] result in
             switch result {
             case .success(let fetchedUsers):
@@ -69,13 +68,13 @@ extension CoreDataTests {
     }
 
     func test_WhenSaveUser_Called_ShouldUpdate() {
-        databaseService.saveUser(testUser1)
+        databaseService.saveUsers([testUser1])
         testUser1 = User(
             login: "New login", id: 1, nodeId: "", avatarUrl: "", gravatarId: "",
             url: "", htmlUrl: "", followersUrl: "", followingUrl: "", gistsUrl: "",
             starredUrl: "", subscriptionsUrl: "", organizationsUrl: "", reposUrl: "",
             eventsUrl: "", receivedEventsUrl: "", type: .user, siteAdmin: false)
-        databaseService.saveUser(testUser1)
+        databaseService.saveUsers([testUser1])
         databaseService.getUsers { [weak self] result in
             switch result {
             case .success(let fetchedUsers):
@@ -87,8 +86,7 @@ extension CoreDataTests {
     }
 
     func test_WhenGetUsers_Called_ShouldGet() {
-        databaseService.saveUser(testUser1)
-        databaseService.saveUser(testUser2)
+        databaseService.saveUsers([testUser1, testUser2])
         databaseService.getUsers { result in
             switch result {
             case .success(let fetchedUsers):
@@ -100,7 +98,7 @@ extension CoreDataTests {
     }
 
     func test_WhenGetUser_Called_ShouldGet() {
-        databaseService.saveUser(testUser1)
+        databaseService.saveUsers([testUser1])
         databaseService.getUsers { [weak self] result in
             switch result {
             case .success(let fetchedUsers):
@@ -122,7 +120,7 @@ extension CoreDataTests {
 
     func test_WhenSaveNote_Called_ShouldSave() {
         let noteText = "Note Text"
-        databaseService.saveUser(testUser1)
+        databaseService.saveUsers([testUser1])
         databaseService.getUsers { [weak self] result in
             switch result {
             case .success(let fetchedUsers):
@@ -138,7 +136,7 @@ extension CoreDataTests {
 
     func test_WhenSaveNote_Called_ShouldUpdate() {
         let noteText = "Note Text"
-        databaseService.saveUser(testUser1)
+        databaseService.saveUsers([testUser1])
         databaseService.getUsers { [weak self] result in
             switch result {
             case .success(let fetchedUsers):
@@ -155,7 +153,7 @@ extension CoreDataTests {
     }
 
     func test_WhenSave_UserProfile_Called_ShouldSave() {
-        databaseService.saveUser(testUser1)
+        databaseService.saveUsers([testUser1])
         databaseService.getUsers { [weak self] result in
             switch result {
             case .success(let fetchedUsers):
@@ -169,7 +167,7 @@ extension CoreDataTests {
     }
 
     func test_WhenSave_UserProfile_Called_ShouldUpdate() {
-        databaseService.saveUser(testUser1)
+        databaseService.saveUsers([testUser1])
         databaseService.getUsers { [weak self] result in
             switch result {
             case .success(let fetchedUsers):

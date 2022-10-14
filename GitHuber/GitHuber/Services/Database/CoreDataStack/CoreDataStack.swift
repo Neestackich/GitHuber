@@ -31,9 +31,10 @@ final class CoreDataStack: CoreDataStackType {
         return managedObjectContext
     }()
 
-    private lazy var managedObjectContext: NSManagedObjectContext = {
+    private lazy var readManagedObjectContext: NSManagedObjectContext = {
         let managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         managedObjectContext.parent = writeManagedObjectContext
+        managedObjectContext.automaticallyMergesChangesFromParent = true
 
         return managedObjectContext
     }()
@@ -52,32 +53,12 @@ extension CoreDataStack {
 
     // MARK: Contexts Management
 
-    func getManagedObjectContext() -> NSManagedObjectContext {
-        return managedObjectContext
+    func getReadManagedObjectContext() -> NSManagedObjectContext {
+        return readManagedObjectContext
     }
 
-    func saveContextsIfNeeded() {
-        guard managedObjectContext.hasPersistanceChanges || writeManagedObjectContext.hasPersistanceChanges else {
-            return
-        }
-
-        managedObjectContext.performAndWait() {
-            do {
-                try self.managedObjectContext.save()
-            } catch {
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-            }
-        }
-
-        writeManagedObjectContext.perform() {
-            do {
-                try self.writeManagedObjectContext.save()
-            } catch {
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-            }
-        }
+    func getWriteManagedObjectContext() -> NSManagedObjectContext {
+        return writeManagedObjectContext
     }
 
 }

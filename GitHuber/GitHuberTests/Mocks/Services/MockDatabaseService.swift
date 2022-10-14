@@ -64,7 +64,7 @@ final class MockDatabaseService: DatabaseServiceType {
         }
     }
 
-    func saveUser(_ user: User) {
+    func saveUsers(_ users: [User]) {
         saveUserCalled = true
     }
 

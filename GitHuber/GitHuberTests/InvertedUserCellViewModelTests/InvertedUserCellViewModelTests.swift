@@ -26,8 +26,8 @@ final class InvertedUserCellViewModelTests: XCTestCase {
         mockAPIClient = MockAPIClient()
         mockFileManager = MockFileSystemManager()
         imageInverter = MockImageInversion()
-        coreDataStack = TestCoreDataStack()
-        testContext = coreDataStack.getManagedObjectContext()
+        coreDataStack = TestCoreDataStack(modelName: "GitHuber")
+        testContext = coreDataStack.getReadManagedObjectContext()
         let entityDescription = NSEntityDescription.entity(forEntityName: "UserEntity", in: testContext)
         userEntity = UserEntity(entity: entityDescription!, insertInto: testContext)
         userEntity.avatarUrl = "http/test/avatar"

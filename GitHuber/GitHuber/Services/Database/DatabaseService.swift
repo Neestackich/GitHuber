@@ -13,11 +13,13 @@ final class DatabaseService: DatabaseServiceType {
     // MARK: Contexts
 
     private let coreDataStack: CoreDataStackType
-    private let managedObjectContext: NSManagedObjectContext
+    private let readManagedObjectContext: NSManagedObjectContext
+    private let writeManagedObjectOntext: NSManagedObjectContext
 
     init(coreDataStack: CoreDataStackType) {
         self.coreDataStack = coreDataStack
-        self.managedObjectContext = coreDataStack.getManagedObjectContext()
+        self.readManagedObjectContext = coreDataStack.getReadManagedObjectContext()
+        self.writeManagedObjectOntext = coreDataStack.getWriteManagedObjectContext()
     }
 
 }
@@ -27,8 +29,8 @@ final class DatabaseService: DatabaseServiceType {
 extension DatabaseService {
 
     func getUsers(completion: @escaping (Result<[UserEntity], Error>) -> Void) {
-        managedObjectContext.perform { [weak self] in
-            guard let managedObjectContext = self?.managedObjectContext else {
+        readManagedObjectContext.perform { [weak self] in
+            guard let managedObjectContext = self?.readManagedObjectContext else {
                 return
             }
 
@@ -46,8 +48,8 @@ extension DatabaseService {
     }
 
     func getUser(_ user: UserEntity, completion: @escaping (Result<UserEntity, Error>) -> Void) {
-        managedObjectContext.perform { [weak self] in
-            guard let managedObjectContext = self?.managedObjectContext, let login = user.login else {
+        readManagedObjectContext.perform { [weak self] in
+            guard let managedObjectContext = self?.readManagedObjectContext, let login = user.login else {
                 return
             }
 
@@ -70,7 +72,7 @@ extension DatabaseService {
     }
 
     func saveUsers(_ users: [User]) {
-        managedObjectContext.performAndWait { [weak self] in
+        writeManagedObjectOntext.performAndWait { [weak self] in
             for user in users {
                 if let exists = self?.userExists(user), exists {
                     self?.updateUser(user)
@@ -79,31 +81,31 @@ extension DatabaseService {
                 }
             }
 
-            self?.coreDataStack.saveContextsIfNeeded()
+            try? self?.writeManagedObjectOntext.save()
         }
     }
 
     func saveNote(for user: UserEntity, text: String?) {
-        managedObjectContext.performAndWait { [weak self] in
+        writeManagedObjectOntext.performAndWait { [weak self] in
             if let note = user.note {
                 note.text = text
             } else {
                 self?.saveNewNote(for: user, text: text)
             }
 
-            self?.coreDataStack.saveContextsIfNeeded()
+            try? self?.writeManagedObjectOntext.save()
         }
     }
 
     func saveUserProfile(for user: UserEntity, profileData: UserProfile) {
-        managedObjectContext.performAndWait { [weak self] in
+        writeManagedObjectOntext.performAndWait { [weak self] in
             if user.profile != nil {
                 self?.updateUserProfile(for: user, profileData: profileData)
             } else {
                 self?.saveNewUserProfile(for: user, profileData: profileData)
             }
 
-            self?.coreDataStack.saveContextsIfNeeded()
+            try? self?.writeManagedObjectOntext.save()
         }
     }
 
@@ -119,7 +121,7 @@ private extension DatabaseService {
         fetchRequest.predicate = idPredicate
 
         do {
-            let count = try managedObjectContext.count(for: fetchRequest)
+            let count = try readManagedObjectContext.count(for: fetchRequest)
             if count != 0 {
                 return true
             }
@@ -131,7 +133,7 @@ private extension DatabaseService {
     }
 
     private func saveNewUser(_ user: User) {
-        let userEntity = UserEntity(context: managedObjectContext)
+        let userEntity = UserEntity(context: writeManagedObjectOntext)
         userEntity.login = user.login
         userEntity.id = Int64(user.id)
         userEntity.nodeId = user.nodeId
@@ -158,7 +160,7 @@ private extension DatabaseService {
         fetchRequest.predicate = idPredicate
 
         do {
-            let users = try managedObjectContext.fetch(fetchRequest)
+            let users = try writeManagedObjectOntext.fetch(fetchRequest)
 
             guard let persistentUser = users.first else {
                 return
@@ -188,49 +190,56 @@ private extension DatabaseService {
     }
 
     private func saveNewNote(for user: UserEntity, text: String?) {
-        let newNote = NoteEntity(context: managedObjectContext)
+        let newNote = NoteEntity(context: writeManagedObjectOntext)
         newNote.text = text
-        user.note = newNote
-        user.hasNote = true
+
+        let userObjectId = user.objectID
+        let userCopy = writeManagedObjectOntext.object(with: userObjectId) as? UserEntity
+
+        userCopy?.note = newNote
+        userCopy?.hasNote = true
     }
 
     private func updateUserProfile(for user: UserEntity, profileData: UserProfile) {
-        user.profile?.login = profileData.login
-        user.profile?.id = Int64(profileData.id)
-        user.profile?.nodeId = profileData.nodeId
-        user.profile?.avatarUrl = profileData.avatarUrl
-        user.profile?.gravatarId = profileData.gravatarId
-        user.profile?.url = profileData.url
-        user.profile?.htmlUrl = profileData.htmlUrl
-        user.profile?.followersUrl = profileData.followersUrl
-        user.profile?.followingUrl = profileData.followingUrl
-        user.profile?.gistsUrl = profileData.gistsUrl
-        user.profile?.starredUrl = profileData.starredUrl
-        user.profile?.subscriptionsUrl = profileData.subscriptionsUrl
-        user.profile?.organizationsUrl = profileData.organizationsUrl
-        user.profile?.reposUrl = profileData.reposUrl
-        user.profile?.eventsUrl = profileData.eventsUrl
-        user.profile?.receivedEventsUrl = profileData.receivedEventsUrl
-        user.profile?.type = profileData.type.rawValue
-        user.profile?.siteAdmin = profileData.siteAdmin
-        user.profile?.name = profileData.name
-        user.profile?.company = profileData.company
-        user.profile?.blog = profileData.blog
-        user.profile?.location = profileData.location
-        user.profile?.email = profileData.email
-        user.profile?.hireable = profileData.hireable
-        user.profile?.bio = profileData.bio
-        user.profile?.twitterUsername = profileData.twitterUsername
-        user.profile?.publicRepos = Int32(profileData.publicRepos)
-        user.profile?.publicGists = Int32(profileData.publicGists)
-        user.profile?.followers = Int32(profileData.followers)
-        user.profile?.following = Int32(profileData.following)
-        user.profile?.createdAt = profileData.createdAt
-        user.profile?.updatedAt = profileData.updatedAt
+        let objectId = user.objectID
+        let userCopy = writeManagedObjectOntext.object(with: objectId) as? UserEntity
+
+        userCopy?.profile?.login = profileData.login
+        userCopy?.profile?.id = Int64(profileData.id)
+        userCopy?.profile?.nodeId = profileData.nodeId
+        userCopy?.profile?.avatarUrl = profileData.avatarUrl
+        userCopy?.profile?.gravatarId = profileData.gravatarId
+        userCopy?.profile?.url = profileData.url
+        userCopy?.profile?.htmlUrl = profileData.htmlUrl
+        userCopy?.profile?.followersUrl = profileData.followersUrl
+        userCopy?.profile?.followingUrl = profileData.followingUrl
+        userCopy?.profile?.gistsUrl = profileData.gistsUrl
+        userCopy?.profile?.starredUrl = profileData.starredUrl
+        userCopy?.profile?.subscriptionsUrl = profileData.subscriptionsUrl
+        userCopy?.profile?.organizationsUrl = profileData.organizationsUrl
+        userCopy?.profile?.reposUrl = profileData.reposUrl
+        userCopy?.profile?.eventsUrl = profileData.eventsUrl
+        userCopy?.profile?.receivedEventsUrl = profileData.receivedEventsUrl
+        userCopy?.profile?.type = profileData.type.rawValue
+        userCopy?.profile?.siteAdmin = profileData.siteAdmin
+        userCopy?.profile?.name = profileData.name
+        userCopy?.profile?.company = profileData.company
+        userCopy?.profile?.blog = profileData.blog
+        userCopy?.profile?.location = profileData.location
+        userCopy?.profile?.email = profileData.email
+        userCopy?.profile?.hireable = profileData.hireable
+        userCopy?.profile?.bio = profileData.bio
+        userCopy?.profile?.twitterUsername = profileData.twitterUsername
+        userCopy?.profile?.publicRepos = Int32(profileData.publicRepos)
+        userCopy?.profile?.publicGists = Int32(profileData.publicGists)
+        userCopy?.profile?.followers = Int32(profileData.followers)
+        userCopy?.profile?.following = Int32(profileData.following)
+        userCopy?.profile?.createdAt = profileData.createdAt
+        userCopy?.profile?.updatedAt = profileData.updatedAt
     }
 
     private func saveNewUserProfile(for user: UserEntity, profileData: UserProfile) {
-        let newProfile = UserProfileEntity(context: managedObjectContext)
+        let newProfile = UserProfileEntity(context: writeManagedObjectOntext)
         newProfile.login = profileData.login
         newProfile.id = Int64(profileData.id)
         newProfile.nodeId = profileData.nodeId
@@ -264,8 +273,11 @@ private extension DatabaseService {
         newProfile.createdAt = profileData.createdAt
         newProfile.updatedAt = profileData.updatedAt
 
-        user.profile = newProfile
-        user.isSeen = true
+        let userObjectId = user.objectID
+        let userCopy = writeManagedObjectOntext.object(with: userObjectId) as? UserEntity
+
+        userCopy?.profile = newProfile
+        userCopy?.isSeen = true
     }
 
 }

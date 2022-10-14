@@ -11,10 +11,12 @@ import CoreData
 
 final class TestCoreDataStack: NSObject, CoreDataStackType {
 
+    private let modelName: String
+
     lazy var persistentContainer: NSPersistentContainer = {
         let description = NSPersistentStoreDescription()
         description.type = NSInMemoryStoreType
-
+        
         let container = NSPersistentContainer(name: "GitHuber")
         container.persistentStoreDescriptions = [description]
         container.loadPersistentStores { _, error in
@@ -22,20 +24,39 @@ final class TestCoreDataStack: NSObject, CoreDataStackType {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         }
-
+        
         return container
     }()
+    
+    lazy private var writeManageObjectContext: NSManagedObjectContext = {
+        let managedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        managedObjectContext.persistentStoreCoordinator = persistentContainer.persistentStoreCoordinator
+
+        return managedObjectContext
+    }()
+
+    lazy private var readManagedObjectContext: NSManagedObjectContext = {
+        let managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+        managedObjectContext.parent = writeManageObjectContext
+        managedObjectContext.automaticallyMergesChangesFromParent = true
+
+        return managedObjectContext
+    }()
+
+    init(modelName: String) {
+        self.modelName = modelName
+    }
 
 }
 
 extension TestCoreDataStack {
 
-    func getManagedObjectContext() -> NSManagedObjectContext {
-        return persistentContainer.newBackgroundContext()
+    func getReadManagedObjectContext() -> NSManagedObjectContext {
+        return readManagedObjectContext
     }
 
-    func saveContextsIfNeeded() {
-        // persistentContainer.viewContext.save()
+    func getWriteManagedObjectContext() -> NSManagedObjectContext {
+        return writeManageObjectContext
     }
 
 }

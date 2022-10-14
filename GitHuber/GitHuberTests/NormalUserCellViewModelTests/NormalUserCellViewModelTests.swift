@@ -24,8 +24,8 @@ final class NormalUserCellViewModelTests: XCTestCase {
 
         mockAPIClient = MockAPIClient()
         mockFileManager = MockFileSystemManager()
-        coreDataStack = TestCoreDataStack()
-        testContext = coreDataStack.getManagedObjectContext()
+        coreDataStack = TestCoreDataStack(modelName: "GitHuber")
+        testContext = coreDataStack.getReadManagedObjectContext()
         let entityDescription = NSEntityDescription.entity(forEntityName: "UserEntity", in: testContext)
         userEntity = UserEntity(entity: entityDescription!, insertInto: testContext)
         userEntity.avatarUrl = "http/test/avatar"

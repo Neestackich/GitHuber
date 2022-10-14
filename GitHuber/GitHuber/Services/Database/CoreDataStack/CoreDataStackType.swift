@@ -11,7 +11,7 @@ import CoreData
 protocol CoreDataStackType {
 
     // MARK: Contexts Management
-    func getManagedObjectContext() -> NSManagedObjectContext
-    func saveContextsIfNeeded()
+    func getReadManagedObjectContext() -> NSManagedObjectContext
+    func getWriteManagedObjectContext() -> NSManagedObjectContext
 
 }

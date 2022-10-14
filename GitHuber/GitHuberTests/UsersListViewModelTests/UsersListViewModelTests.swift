@@ -30,8 +30,8 @@ final class UsersListViewModelTests: XCTestCase {
         apiConfig = APIConfig()
         mockAPIClient = MockAPIClient()
         mockFileManager = MockFileSystemManager()
-        coreDataStack = TestCoreDataStack()
-        testContext = coreDataStack.getManagedObjectContext()
+        coreDataStack = TestCoreDataStack(modelName: "GitHuber")
+        testContext = coreDataStack.getReadManagedObjectContext()
         mockDatabaseService = MockDatabaseService(testContext: testContext)
         mockConnectionListener = MockNetworkConnectionListener()
 
