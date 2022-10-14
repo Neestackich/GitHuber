@@ -135,7 +135,6 @@ extension UsersListViewModel {
     }
 
     func paginate() {
-        showPaginationLoading?(false)
         if paginationEnabled, let lastUserId = users.last?.id {
             showPaginationLoading?(true)
             loadUsersFromBackend(from: Int(lastUserId))
@@ -161,6 +160,7 @@ private extension UsersListViewModel {
 
                 DispatchQueue.main.async {
                     self?.reloadData?()
+                    self?.showPaginationLoading?(false)
                 }
             case .failure(let error):
                 print(error)
