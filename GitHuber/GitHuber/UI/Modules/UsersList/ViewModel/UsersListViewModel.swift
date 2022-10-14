@@ -29,6 +29,7 @@ final class UsersListViewModel: UsersListViewModelType {
     var reloadData: (() -> Void)?
     var endTableViewRefreshing: (() -> Void)?
     var showLoading: ((Bool) -> Void)?
+    var showPaginationLoading: ((Bool) -> Void)?
     var showOfflineView: ((Bool) -> Void)?
 
     // MARK: Initialization
@@ -125,7 +126,7 @@ extension UsersListViewModel {
         }
     }
 
-    func searchBarTextDidEndEditing() {
+    func searchBarCancelButtonClicked() {
         paginationEnabled = true
         sortedUsers = users
         DispatchQueue.main.async { [weak self] in
@@ -134,7 +135,9 @@ extension UsersListViewModel {
     }
 
     func paginate() {
+        showPaginationLoading?(false)
         if paginationEnabled, let lastUserId = users.last?.id {
+            showPaginationLoading?(true)
             loadUsersFromBackend(from: Int(lastUserId))
         }
     }

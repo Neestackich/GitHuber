@@ -13,6 +13,7 @@ protocol UsersListViewModelType: ViewModelType {
     var reloadData: (() -> Void)? { get set }
     var endTableViewRefreshing: (() -> Void)? { get set }
     var showLoading: ((Bool) -> Void)? { get set }
+    var showPaginationLoading: ((Bool) -> Void)? { get set }
     var showOfflineView: ((Bool) -> Void)? { get set }
 
     // MARK: Lifecycle
@@ -27,6 +28,6 @@ protocol UsersListViewModelType: ViewModelType {
     // MARK: - SearchBar
     func searchBarTextDidBeginEditing()
     func searchBarTextDidChange(with query: String)
-    func searchBarTextDidEndEditing()
+    func searchBarCancelButtonClicked()
 
 }

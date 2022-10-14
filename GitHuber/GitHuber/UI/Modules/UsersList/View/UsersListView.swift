@@ -169,6 +169,13 @@ private extension UsersListView {
         viewModel?.showOfflineView = { [weak self] show in
             self?.showOfflineView(show)
         }
+        viewModel?.showPaginationLoading = { [weak self] show in
+            if show {
+                self?.tableView.tableFooterView = self?.tableViewFooter
+            } else {
+                self?.tableView.tableFooterView = nil
+            }
+        }
     }
 
     private func showLoading(_ show: Bool) {
@@ -187,7 +194,7 @@ private extension UsersListView {
 
 // MARK: - UISearchBarDelegate
 
-extension UsersListView: UISearchBarDelegate {
+extension UsersListView: UISearchBarDelegate, UISearchControllerDelegate {
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         viewModel?.searchBarTextDidChange(with: searchText)
@@ -197,8 +204,8 @@ extension UsersListView: UISearchBarDelegate {
         viewModel?.searchBarTextDidBeginEditing()
     }
 
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        viewModel?.searchBarTextDidEndEditing()
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        viewModel?.searchBarCancelButtonClicked()
     }
 
 }
@@ -229,10 +236,7 @@ extension UsersListView: UITableViewDataSource, UITableViewDelegate {
             return
         }
 
-        tableView.tableFooterView = tableViewFooter
-
         if indexPath.row == usersCount - 1 {
-            tableView.tableFooterView = nil
             viewModel?.paginate()
         }
     }
